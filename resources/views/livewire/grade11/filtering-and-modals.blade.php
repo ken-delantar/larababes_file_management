@@ -1,5 +1,5 @@
 <div>
-    <!-- resources/views/livewire/grade11/school-year-modal.blade.php -->
+
     <div class="flex gap-5 justify-end">
         <x-dropdown>
             <x-slot name="trigger">
@@ -12,16 +12,14 @@
             </x-slot>
         
             <x-slot name="content">
-                <x-dropdown-link wire:click="$set('schoolYear', '2024 - 2025')">
-                    2024 - 2025
-                </x-dropdown-link>
-
-                <x-dropdown-link wire:click="$set('schoolYear', '2023 - 2024')">
-                    2023 - 2024
-                </x-dropdown-link>
+                @foreach ($school_years as $school_year)
+                    <x-dropdown-link>
+                        {{ $school_year->year_start }} - {{ $school_year->year_end }}
+                    </x-dropdown-link>
+                @endforeach
 
                 <x-dropdown-link wire:click="addSchoolYear">
-                    Add S.Y
+                    ADD S.Y
                 </x-dropdown-link>
                 
             </x-slot>
@@ -39,23 +37,10 @@
         
             <x-slot name="content">
                 @foreach ($strands as $strand)
-                    <x-dropdown-link wire:click="$set('schoolYear', '2024 - 2025')">
+                    <x-dropdown-link>
                         {{ $strand->strand }}
                     </x-dropdown-link>
                 @endforeach
-                
-
-                {{-- <x-dropdown-link wire:click="$set('schoolYear', '2023 - 2024')">
-                    ABM
-                </x-dropdown-link>
-
-                <x-dropdown-link wire:click="$set('schoolYear', '2023 - 2024')">
-                    STEM
-                </x-dropdown-link>
-
-                <x-dropdown-link wire:click="$set('schoolYear', '2023 - 2024')">
-                    HUMMS
-                </x-dropdown-link> --}}
             </x-slot>
         </x-dropdown> 
 
@@ -70,6 +55,11 @@
             </x-slot>
         
             <x-slot name="content">
+                @foreach ($sections as $section)
+                    <x-dropdown-link>
+                        {{ strtoupper($section->section_name) }}
+                    </x-dropdown-link>
+                @endforeach
                 <x-dropdown-link wire:click="addSection">
                     Add Section
                 </x-dropdown-link>
@@ -115,7 +105,7 @@
                 Dismiss
             </x-secondary-button>
 
-            <x-button class="ml-2" wire:click="save">
+            <x-button class="ml-2" wire:click="save('school_year')">
                 Save
             </x-button>
         </x-slot>
@@ -132,40 +122,38 @@
                 {{-- School Year --}}
                 <div>
                     <x-label for="schoolYear" value="School Year" class="dark:text-white" />
-                    <select name="schoolYear" id="schoolYear"
-                        class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:ring focus:ring-indigo-200">
-                        <option value="">2024 - 2025</option>
-                        <option value="">2023 - 2024</option>
-                        <option value="">2022 - 2023</option>
+                    <select id="schoolYear" wire:model="sectionSchoolYear" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:ring focus:ring-indigo-200">
+                        <option selected value="">SELECT SCHOOL YEAR</option>
+                        @foreach ($school_years as $school_year)
+                            <option value="{{ $school_year->id }}">{{ $school_year->year_start }} - {{ $school_year->year_end }}</option>
+                        @endforeach
                     </select>
-                    @error('schoolYear') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
+                    @error('sectionSchoolYear') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
                 </div>
     
                 {{-- Strand --}}
                 <div>
                     <x-label for="strand" value="Strand" class="dark:text-white" />
-                    <select name="strand" id="strand"
-                        class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:ring focus:ring-indigo-200">
-                        <option value="">ICT</option>
-                        <option value="">STEM</option>
-                        <option value="">ABM</option>
-                        <option value="">HUMMS</option>
+                    <select id="strand" wire:model="sectionStrand" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:ring focus:ring-indigo-200">
+                        <option selected value="">SELECT STRAND</option>
+                        @foreach ($strands as $strand)
+                            <option value="{{ $strand->id }}">{{ strtoupper($strand->strand) }}</option>
+                        @endforeach
                     </select>
-                    @error('strand') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
+                    @error('sectionStrand') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
                 </div>
     
                 {{-- Section Number --}}
                 <div>
                     <x-label for="section_number" value="Section Number" class="dark:text-white" />
-                    <x-input id="section_number" type="text" class="mt-1 block w-full dark:bg-gray-800 dark:border-gray-600 dark:text-white" wire:model.defer="section_number" />
-                    @error('section_number') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
+                    <x-input id="section_number" wire:model="sectionNumber" type="text" class="mt-1 block w-full dark:bg-gray-800 dark:border-gray-600 dark:text-white" />
+                    @error('sectionNumber') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
                 </div>
     
                 {{-- Preview --}}
                 <div>
                     <x-label for="preview" value="Preview" class="dark:text-white" />
-                    <x-input id="preview" type="text" class="mt-1 block w-full dark:bg-gray-800 dark:border-gray-600 dark:text-white" wire:model.defer="preview" />
-                    @error('preview') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
+                    <x-input id="preview" type="text" class="mt-1 block w-full dark:bg-gray-800 dark:border-gray-600 dark:text-white" disabled />
                 </div>
             </div>
         </x-slot>
@@ -175,11 +163,31 @@
                 Dismiss
             </x-secondary-button>
     
-            <x-button class="ml-2" wire:click="save">
+            <x-button class="ml-2" wire:click="save('section')">
                 Save
             </x-button>
         </x-slot>
     </x-dialog-modal>
     
+    <script>
+        document.addEventListener('change', function () {
+            const schoolYearSelect = document.getElementById('schoolYear');
+            const strandSelect = document.getElementById('strand');
+            const sectionNumberInput = document.getElementById('section_number');
+            const previewInput = document.getElementById('preview');
     
+            schoolYearSelect.addEventListener('change', updatePreview);
+            strandSelect.addEventListener('change', updatePreview);
+            sectionNumberInput.addEventListener('input', updatePreview);
+    
+            function updatePreview() {
+                const schoolYearText = schoolYearSelect.options[schoolYearSelect.selectedIndex]?.text;
+                const strandText = strandSelect.options[strandSelect.selectedIndex]?.text;
+                const sectionNumber = 11 +sectionNumberInput.value;
+    
+                const previewText = `${schoolYearText ? schoolYearText : ''} ${strandText ? strandText : ''}${sectionNumber ? sectionNumber : ''}`;
+                previewInput.value = previewText.trim();
+            }
+        });
+    </script>
 </div>

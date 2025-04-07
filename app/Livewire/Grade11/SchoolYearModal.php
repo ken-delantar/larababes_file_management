@@ -35,7 +35,7 @@ class SchoolYearModal extends Component
 
         logger('Saved school year: ' . $this->schoolYear);
 
-        $this->dispatchBrowserEvent('notify', 'School Year saved!');  
+        $this->dispatch('notify', 'School Year saved!');
         $this->addSchoolYearModal = false;  
     }
 
