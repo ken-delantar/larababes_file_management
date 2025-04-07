@@ -38,11 +38,14 @@
             </x-slot>
         
             <x-slot name="content">
-                <x-dropdown-link wire:click="$set('schoolYear', '2024 - 2025')">
-                    ICT
-                </x-dropdown-link>
+                @foreach ($strands as $strand)
+                    <x-dropdown-link wire:click="$set('schoolYear', '2024 - 2025')">
+                        {{ $strand->strand }}
+                    </x-dropdown-link>
+                @endforeach
+                
 
-                <x-dropdown-link wire:click="$set('schoolYear', '2023 - 2024')">
+                {{-- <x-dropdown-link wire:click="$set('schoolYear', '2023 - 2024')">
                     ABM
                 </x-dropdown-link>
 
@@ -52,7 +55,7 @@
 
                 <x-dropdown-link wire:click="$set('schoolYear', '2023 - 2024')">
                     HUMMS
-                </x-dropdown-link>
+                </x-dropdown-link> --}}
             </x-slot>
         </x-dropdown> 
 
@@ -67,14 +70,6 @@
             </x-slot>
         
             <x-slot name="content">
-                <x-dropdown-link wire:click="$set('schoolYear', '2024 - 2025')">
-                    1101
-                </x-dropdown-link>
-
-                <x-dropdown-link wire:click="$set('schoolYear', '2023 - 2024')">
-                    1102
-                </x-dropdown-link>
-
                 <x-dropdown-link wire:click="addSection">
                     Add Section
                 </x-dropdown-link>

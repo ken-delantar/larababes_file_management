@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Grade11;
 
+use App\Models\Strand;
 use Livewire\Component;
 
 class SchoolYearModal extends Component
@@ -40,6 +41,10 @@ class SchoolYearModal extends Component
 
     public function render()
     {
-        return view('livewire.grade11.school-year-modal');
+        $strands = Strand::all();
+
+        return view('livewire.grade11.school-year-modal', [
+            'strands' => $strands
+        ]);
     }
 }
