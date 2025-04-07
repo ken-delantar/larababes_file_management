@@ -1,0 +1,15 @@
+tbody td:last-child{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.card-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.form-btn{
+    display: flex;
+    justify-content: end;
+    margin-top: 5px;
+}
