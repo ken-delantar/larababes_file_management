@@ -26,7 +26,7 @@ class StudentTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make("Student id", "student_id")
+            Column::make("Id", "id")
                 ->sortable()
                 ->searchable(),
 
