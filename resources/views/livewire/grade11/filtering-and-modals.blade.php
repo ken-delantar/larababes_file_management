@@ -1,6 +1,7 @@
-<div>
+<div wire:poll.15000ms>
 
     <div class="flex gap-5 justify-end">
+        {{-- School Year Dropdown --}}
         <x-dropdown>
             <x-slot name="trigger">
                 <x-secondary-button class="px-4 py-2 rounded flex items-center space-x-2">
@@ -13,18 +14,18 @@
         
             <x-slot name="content">
                 @foreach ($school_years as $school_year)
-                    <x-dropdown-link>
+                    <x-dropdown-link wire:click="filterBySchoolYear({{ $school_year->id }})">
                         {{ $school_year->year_start }} - {{ $school_year->year_end }}
                     </x-dropdown-link>
                 @endforeach
-
+    
                 <x-dropdown-link wire:click="addSchoolYear">
                     ADD S.Y
                 </x-dropdown-link>
-                
             </x-slot>
-        </x-dropdown> 
-
+        </x-dropdown>
+    
+        {{-- Strand Dropdown --}}
         <x-dropdown>
             <x-slot name="trigger">
                 <x-secondary-button class="px-4 py-2 rounded flex items-center space-x-2">
@@ -37,13 +38,14 @@
         
             <x-slot name="content">
                 @foreach ($strands as $strand)
-                    <x-dropdown-link>
+                    <x-dropdown-link wire:click="filterByStrand({{ $strand->id }})">
                         {{ $strand->strand }}
                     </x-dropdown-link>
                 @endforeach
             </x-slot>
-        </x-dropdown> 
-
+        </x-dropdown>
+    
+        {{-- Section Dropdown --}}
         <x-dropdown>
             <x-slot name="trigger">
                 <x-secondary-button class="px-4 py-2 rounded flex items-center space-x-2">
@@ -56,20 +58,22 @@
         
             <x-slot name="content">
                 @foreach ($sections as $section)
-                    <x-dropdown-link>
+                    <x-dropdown-link wire:click="filterBySection({{ $section->id }})">
                         {{ strtoupper($section->section_name) }}
                     </x-dropdown-link>
                 @endforeach
+    
                 <x-dropdown-link wire:click="addSection">
                     Add Section
                 </x-dropdown-link>
             </x-slot>
-        </x-dropdown> 
-
+        </x-dropdown>
+    
         <x-button>
             Add Student
         </x-button>
     </div>
+    
 
     <x-dialog-modal wire:model="addSchoolYearModal">
         <x-slot name="title">

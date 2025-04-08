@@ -14,12 +14,36 @@ class FilteringAndModals extends Component
     public $schoolYearStart, $schoolYearEnd, $classStart;
     public $sectionSchoolYear, $sectionStrand, $sectionNumber;
 
-    //show section modal
+    // Filtering variables
+    public $schoolYearFilter = null;
+    public $strandFilter = null;
+    public $sectionFilter = null;
+
+    public $school_years;
+    public $strands;
+    public $sections;
+
+    // Mount method to initialize component state
+    public function mount()
+    {
+        // Initialize the school years, strands, and sections data
+        $this->school_years = SchoolYear::all();
+        $this->strands = Strand::all();
+        $this->sections = Section::all();
+    }
+
+    // Show section modal
+    public function addSchoolYear()
+    {
+        $this->addSchoolYearModal = true;
+    }
+
     public function addSection()
     {
         $this->addSectionModal = true;
     }
 
+    // Save School Year or Section
     public function save($selection = '')
     {   
         if ($selection === 'school_year') {
@@ -65,20 +89,52 @@ class FilteringAndModals extends Component
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage());
             }
-
         }
     }
 
+    // Filter by School Year
+    public function filterBySchoolYear($schoolYearId)
+    {
+        $this->schoolYearFilter = $schoolYearId;
+        $this->updateSections();
+    }
+
+    // Filter by Strand
+    public function filterByStrand($strandId)
+    {
+        $this->strandFilter = $strandId;
+        $this->updateSections();
+    }
+
+    // Filter by Section
+    public function filterBySection($sectionId)
+    {
+        $this->sectionFilter = $sectionId;
+    }
+
+    // Update sections based on selected filters
+    protected function updateSections()
+    {
+        $query = Section::query();
+
+        if ($this->schoolYearFilter) {
+            $query->where('school_year_id', $this->schoolYearFilter);
+        }
+
+        if ($this->strandFilter) {
+            $query->where('strand_id', $this->strandFilter);
+        }
+
+        $this->sections = $query->get();
+    }
+
+    // Render view
     public function render()
     {
-        $strands = Strand::all();
-        $school_years = SchoolYear::all();
-        $sections = Section::all();
-        
         return view('livewire.grade11.filtering-and-modals', [
-            'strands' => $strands,
-            'school_years' => $school_years,
-            'sections' => $sections
+            'strands' => $this->strands,
+            'school_years' => $this->school_years,
+            'sections' => $this->sections
         ]);
     }
 }

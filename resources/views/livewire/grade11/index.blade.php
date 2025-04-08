@@ -9,14 +9,17 @@
 
         <div class="w-full mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 shadow-xl sm:rounded-lg p-6">
-                <div>
+                {{-- <div>
                     @livewire('Grade11.filtering-and-modals')
                 </div>
  
                 <div class="mt-3">
                     @livewire('Grade11.student-table')
-                </div>
+                </div> --}}
                 
+                <div class="mt-5">
+                    @livewire('Grade11.student-information')
+                </div>
             </div>
         </div>
     </div>
