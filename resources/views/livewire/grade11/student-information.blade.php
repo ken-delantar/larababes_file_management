@@ -1,6 +1,6 @@
 <div class="p-6 space-y-6">
     <x-slot name="header">
-        <h2 class="text-2xl font-semibold text-gray-800">Marvel Ken John Ferrer</h2>
+        <h2 class="text-2xl font-semibold text-gray-800">John Ken Marvel Ferrer</h2>
     </x-slot>
 
     <x-section-title>
@@ -49,7 +49,7 @@
                     </x-slot>
     
                     <x-slot name="content">
-                        <div class="mt-4">
+                        <div class="mt-4 h-64 flex items-end">
                             <x-label for="file" value="Choose file" class="block text-sm font-medium text-gray-700" />
                             <x-input id="file" type="file" class="mt-1 block w-full" />
                         </div>
