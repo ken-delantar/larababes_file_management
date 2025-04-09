@@ -17,7 +17,7 @@
             <li>
                 <h4 class="text-white dark:text-gray-300">Management</h4>
                 <a href="#" class="block px-4 py-2 text-white dark:text-gray-300 hover:bg-rose-500 dark:hover:bg-blue-700 rounded transition duration-200">Document Management</a>
-                <a href="#" class="block px-4 py-2 text-white dark:text-gray-300 hover:bg-rose-500 dark:hover:bg-blue-700 rounded transition duration-200">Document Checklist</a>
+                <a href="{{ route('checklist_grade_11') }}" class="block px-4 py-2 text-white dark:text-gray-300 hover:bg-rose-500 dark:hover:bg-blue-700 rounded transition duration-200">Document Checklist</a>
             </li>
         </ul>
     </nav>

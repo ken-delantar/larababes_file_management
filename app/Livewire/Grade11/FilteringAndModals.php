@@ -23,6 +23,10 @@ class FilteringAndModals extends Component
     public $strands;
     public $sections;
 
+    // public function add_student_view(){
+    //     return view('livewire');
+    // }
+
     // Mount method to initialize component state
     public function mount()
     {

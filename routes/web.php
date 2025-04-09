@@ -1,5 +1,7 @@
 <?php
 
+use App\Livewire\Grade11\Checklist;
+use App\Livewire\Grade11\ChecklistTable;
 use App\Livewire\Grade11\Index as Grade11Index;
 use Illuminate\Support\Facades\Route;
 
@@ -19,3 +21,4 @@ Route::middleware([
 
 //grade 11
 Route::get('/grade_11_index', [Grade11Index::class, 'render'])->name('index_grade_11');
+Route::get('/grade_11_checklist', [ChecklistTable::class, 'render'])->name('checklist_grade_11');
