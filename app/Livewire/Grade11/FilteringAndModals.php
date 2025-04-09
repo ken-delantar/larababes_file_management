@@ -23,14 +23,8 @@ class FilteringAndModals extends Component
     public $strands;
     public $sections;
 
-    // public function add_student_view(){
-    //     return view('livewire');
-    // }
-
-    // Mount method to initialize component state
     public function mount()
     {
-        // Initialize the school years, strands, and sections data
         $this->school_years = SchoolYear::all();
         $this->strands = Strand::all();
         $this->sections = Section::all();
@@ -74,6 +68,8 @@ class FilteringAndModals extends Component
     
             $this->dispatch('notify', 'School Year saved!');
             $this->addSchoolYearModal = false;
+            
+            return $this->mount();
 
         } else if ($selection === 'section') {
             
@@ -103,20 +99,20 @@ class FilteringAndModals extends Component
         $this->updateSections();
     }
 
-    // Filter by Strand
+    // // Filter by Strand
     public function filterByStrand($strandId)
     {
         $this->strandFilter = $strandId;
         $this->updateSections();
     }
 
-    // Filter by Section
+    // // Filter by Section
     public function filterBySection($sectionId)
     {
         $this->sectionFilter = $sectionId;
     }
 
-    // Update sections based on selected filters
+    // // Update sections based on selected filters
     protected function updateSections()
     {
         $query = Section::query();
@@ -130,6 +126,10 @@ class FilteringAndModals extends Component
         }
 
         $this->sections = $query->get();
+    }
+
+    public function addStudent(){
+        return redirect()->route('add_student_grade11');
     }
 
     // Render view

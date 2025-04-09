@@ -1,5 +1,4 @@
-<div wire:poll.15000ms>
-
+<div>
     <div class="flex gap-5 justify-end">
         {{-- School Year Dropdown --}}
         <x-dropdown>
@@ -19,7 +18,7 @@
                     </x-dropdown-link>
                 @endforeach
     
-                <x-dropdown-link wire:click="addSchoolYear">
+                <x-dropdown-link wire:click="addSchoolYear" type="button">
                     ADD S.Y
                 </x-dropdown-link>
             </x-slot>
@@ -69,7 +68,7 @@
             </x-slot>
         </x-dropdown>
     
-        <x-button>
+        <x-button wire:click='addStudent'>
             Add Student
         </x-button>
     </div>
