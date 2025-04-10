@@ -25,3 +25,8 @@ Route::middleware([
 Route::get('/grade_11_index', [Grade11Index::class, 'render'])->name('index_grade_11');
 Route::get('/grade11_add_student', [AddStudent::class, 'render'])->name('add_student_grade11');
 Route::get('/grade_11_checklist', [Checklist::class, 'render'])->name('checklist_grade_11');
+
+
+Route::get('/inamo', function () {
+    return view('inamoken');
+});
