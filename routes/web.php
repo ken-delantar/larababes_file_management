@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GradeElevenController;
 use App\Livewire\Form;
 use App\Livewire\Grade11\AddStudent;
 use App\Livewire\Grade11\Checklist;
@@ -22,6 +23,9 @@ Route::middleware([
 });
 
 //grade 11
-Route::get('/grade_11_index', [Grade11Index::class, 'render'])->name('index_grade_11');
+Route::get('/grade_11_index/{view}', [GradeElevenController::class, 'render'])->name('index_grade_11');
+
 Route::get('/grade11_add_student', [AddStudent::class, 'render'])->name('add_student_grade11');
 Route::get('/grade_11_checklist', [Checklist::class, 'render'])->name('checklist_grade_11');
+
+Route::get('/try', [Form::class, 'render'])->name('try');

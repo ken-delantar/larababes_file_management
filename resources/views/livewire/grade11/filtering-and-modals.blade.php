@@ -58,7 +58,7 @@
             <x-slot name="content">
                 @foreach ($sections as $section)
                     <x-dropdown-link wire:click="filterBySection({{ $section->id }})">
-                        {{ strtoupper($section->section_name) }}
+                        {{ $section->section_number }}
                     </x-dropdown-link>
                 @endforeach
     
@@ -72,7 +72,6 @@
             Add Student
         </x-button>
     </div>
-    
 
     <x-dialog-modal wire:model="addSchoolYearModal">
         <x-slot name="title">

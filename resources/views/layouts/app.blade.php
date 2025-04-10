@@ -34,17 +34,20 @@
 
             <!-- Page Content -->
             <main class="flex h-screen bg-gray-100 dark:bg-gray-900">
-                <div style="width: fix-content;"> {{-- Adjust percentage as needed --}}
+                <div style="width: fix-content;"> 
                     @livewire('sidebar')
                 </div>
             
-                <div style="flex-grow: 1;"> {{-- Content takes up remaining space --}}
+                <div class="py-12" style="flex-grow: 1;"> 
                     {{ $slot }}
+
+                    {{-- @livewire('grade11.add-student') --}}
                 </div>
             </main>
         </div>
 
         @stack('modals')
+
         @livewireScripts
     </body>
 </html>

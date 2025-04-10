@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -17,8 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('lrn')->unique();
             $table->string('sex');
             $table->string('school_origin');
-            $table->string('condition')->default('Not Specified');
-            $table->string('status')->default('Not Specified');
+            $table->string('condition')->nullable()->default('Not Specified');
+            $table->string('status');
             $table->timestamps();
         });
 
@@ -30,17 +31,16 @@ return new class extends Migration
 
         Schema::create('school_years', function (Blueprint $table) {
             $table->id();
-            $table->integer('year_start');
-            $table->integer('year_end');
+            $table->integer('year_start')->unique();
+            $table->integer('year_end')->unique();
+            $table->string('school_year');
             $table->date('start_of_class')->nullable();
             $table->timestamps();
         });
 
         Schema::create('sections', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('school_year_id')->constrained('school_years')->onDelete('cascade');
-            $table->foreignId('strand_id')->constrained('strands')->onDelete('cascade');
-            $table->string('section_name');
+            $table->string('section_number');
             $table->tinyInteger('grade_level'); // Optimized storage
             $table->timestamps();
         });
@@ -51,7 +51,7 @@ return new class extends Migration
             $table->foreignId('strand_id')->constrained('strands')->onDelete('cascade');
             $table->foreignId('school_year_id')->constrained('school_years')->onDelete('cascade');
             $table->foreignId('section_id')->constrained('sections')->onDelete('cascade');
-            $table->string('year_end_status');
+            $table->string('year_end_status')->nullable()->default('Not Specified');
             $table->timestamps();
         });
 
@@ -65,9 +65,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('document_id')->constrained('documents')->onDelete('cascade');
             $table->string('type');
-            $table->longBlob('docs'); // Defined directly in migration
+            $table->binary('docs');
             $table->timestamps();
         });
+
+        DB::statement('ALTER TABLE document_records MODIFY COLUMN docs LONGBLOB');
 
         Schema::create('financial_records', function (Blueprint $table) {
             $table->id();

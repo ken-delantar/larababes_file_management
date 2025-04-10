@@ -9,4 +9,8 @@ class Strand extends Model
     protected $fillable = [
         'strand'
     ];
+
+    public function academic_record(){
+        return $this->belongsTo(AcademicRecord::class);
+    }
 }

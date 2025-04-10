@@ -11,4 +11,8 @@ class SchoolYear extends Model
         'year_end',
         'start_of_class',
     ];
+
+    public function academicRecords(){
+        return $this->hasMany(AcademicRecord::class, 'school_year_id');
+    }
 }

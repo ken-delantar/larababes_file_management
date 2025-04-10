@@ -60,6 +60,7 @@ class FilteringAndModals extends Component
                 SchoolYear::create([
                     'year_start' => $this->schoolYearStart,
                     'year_end' => $this->schoolYearEnd,
+                    'school_year' => $this->schoolYearStart . '-' . $this->schoolYearEnd,
                     'start_of_class' => $formattedClassStart,
                 ]);
             } catch (\Exception $e) {
@@ -81,11 +82,16 @@ class FilteringAndModals extends Component
 
             try {
                 Section::create([
-                    'school_year_id' => $this->sectionSchoolYear,
-                    'strand_id' => $this->sectionStrand,
-                    'section_name' => $this->sectionNumber,
+                    // 'school_year_id' => $this->sectionSchoolYear,
+                    // 'strand_id' => $this->sectionStrand,
+                    'section_number' => 11 . $this->sectionNumber,
                     'grade_level' => 11,
                 ]);
+
+                $this->dispatch('notify', 'Section saved!');
+                $this->addSectionModal = false;
+                
+                return $this->mount();
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', $e->getMessage());
             }
@@ -129,7 +135,7 @@ class FilteringAndModals extends Component
     }
 
     public function addStudent(){
-        return redirect()->route('add_student_grade11');
+        return redirect()->route('index_grade_11', 'add_student');
     }
 
     // Render view
