@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('name');
             $table->unsignedBigInteger('lrn')->unique();
             $table->string('sex');
-            $table->string('school_origin');
+            $table->string('school_origin')->nullable()->default('Not Specified');
             $table->string('condition')->nullable()->default('Not Specified');
-            $table->string('status');
+            $table->string('status')->nullable()->default('Not Specified');
             $table->timestamps();
         });
 
@@ -41,7 +41,7 @@ return new class extends Migration
         Schema::create('sections', function (Blueprint $table) {
             $table->id();
             $table->string('section_number');
-            $table->tinyInteger('grade_level'); // Optimized storage
+            $table->integer('grade_level'); 
             $table->timestamps();
         });
 
@@ -50,22 +50,32 @@ return new class extends Migration
             $table->foreignId('student_id')->constrained('students')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreignId('strand_id')->constrained('strands')->onDelete('cascade');
-            $table->foreignId('school_year_id')->constrained('school_years')->onDelete('cascade');
-            $table->foreignId('section_id')->constrained('sections')->onDelete('cascade');
+            $table->foreignId('strand_id')->constrained('strands')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('school_year_id')->constrained('school_years')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('section_id')->constrained('sections')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->string('year_end_status')->nullable()->default('Not Specified');
             $table->timestamps();
         });
 
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
+            $table->foreignId('student_id')->constrained('students')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->timestamps();
         });
 
         Schema::create('document_records', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('document_id')->constrained('documents')->onDelete('cascade');
+            $table->foreignId('document_id')->constrained('documents')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->string('type');
             $table->binary('docs');
             $table->timestamps();
@@ -75,10 +85,12 @@ return new class extends Migration
 
         Schema::create('financial_records', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
-            $table->string('category')->default('Not Specified');
-            $table->string('billing_status')->default('Not Specified');
-            $table->string('vms_billing_status')->default('Not Applicable');
+            $table->foreignId('student_id')->constrained('students')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->string('category')->nullable()->default('Not Specified');
+            $table->string('billing_status')->nullable()->default('Not Specified');
+            $table->string('vms_billing_status')->nullable()->default('Not Applicable');
             $table->integer('approved_voucher')->nullable();
             $table->integer('payee_fee')->nullable();
             $table->timestamps();

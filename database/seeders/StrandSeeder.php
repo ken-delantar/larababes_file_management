@@ -80,5 +80,10 @@ class StrandSeeder extends Seeder
                 'school_year' => '2024 - 2025'
             ]
         ]);
+
+        DB::table('sections')->insert([
+            'section_number' => 1205,
+            'grade_level' => 12
+        ]);
     }
 }

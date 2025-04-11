@@ -22,6 +22,10 @@ Route::middleware([
     })->name('dashboard');
 });
 
+Route::get('/trial', function(){
+    return view('inamoferrer');
+})->name('trial');
+
 //grade 11
 Route::get('/grade_11_index/{view}', [GradeElevenController::class, 'render'])->name('index_grade_11');
 Route::get('/grade_11/index/{view}/{academic_record}', [GradeElevenController::class, 'student_profile'])->name('index_grade_11_profile');

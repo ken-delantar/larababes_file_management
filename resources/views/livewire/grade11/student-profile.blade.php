@@ -105,32 +105,52 @@
                 <div class="grid grid-cols-1 gap-6 mt-6 px-12">
                     <div class="col-span-1 sm:col-span-4">
                         <x-label for="category" value="Category" />
-                        <x-input id="category" type="text" class="mt-1 block w-full" wire:model="category" readonly />
-                        <x-input-error for="category" class="mt-2" />
+                        @if ($category)
+                            <x-input id="category" type="text" class="mt-1 block w-full" wire:model="category" readonly />
+                            <x-input-error for="category" class="mt-2" />
+                        @else
+                            <p>No data.</p>
+                        @endif
                     </div>
             
                     <div class="col-span-1 sm:col-span-4">
                         <x-label for="billing_status" value="Billing Status" />
-                        <x-input id="billing_status" type="text" class="mt-1 block w-full" wire:model="billing_status" readonly />
-                        <x-input-error for="billing_status" class="mt-2" />
+                        @if ($billing_status)
+                            <x-input id="billing_status" type="text" class="mt-1 block w-full" wire:model="billing_status" readonly />
+                            <x-input-error for="billing_status" class="mt-2" />
+                        @else
+                            <p>No data.</p>
+                        @endif
                     </div>
             
                     <div class="col-span-1 sm:col-span-4">
-                        <x-label for="vms_billing_status" value="VMS Billing Status" />
-                        <x-input id="vms_billing_status" type="text" class="mt-1 block w-full" wire:model="vms_billing_status" readonly />
-                        <x-input-error for="vms_billing_status" class="mt-2" />
+                        @if ($vms_billing_status)
+                            <x-label for="vms_billing_status" value="VMS Billing Status" />
+                            <x-input id="vms_billing_status" type="text" class="mt-1 block w-full" wire:model="vms_billing_status" readonly />
+                            <x-input-error for="vms_billing_status" class="mt-2" />
+                        @else
+                            <p>No data.</p>
+                        @endif
                     </div>
             
                     <div class="col-span-1 sm:col-span-4">
                         <x-label for="approved_voucher" value="Approved Voucher" />
-                        <x-input id="approved_voucher" type="text" class="mt-1 block w-full" wire:model="approved_voucher" readonly />
-                        <x-input-error for="approved_voucher" class="mt-2" />
+                        @if ($approved_voucher)
+                            <x-input id="approved_voucher" type="text" class="mt-1 block w-full" wire:model="approved_voucher" readonly />
+                            <x-input-error for="approved_voucher" class="mt-2" />
+                        @else
+                            <p>No data.</p>
+                        @endif
                     </div>
             
                     <div class="col-span-1 sm:col-span-4">
                         <x-label for="payee_fee" value="Payee Fee" />
-                        <x-input id="payee_fee" type="text" class="mt-1 block w-full" wire:model="payee_fee" readonly />
-                        <x-input-error for="payee_fee" class="mt-2" />
+                        @if ($payee_fee)
+                            <x-input id="payee_fee" type="text" class="mt-1 block w-full" wire:model="payee_fee" readonly />
+                            <x-input-error for="payee_fee" class="mt-2" />
+                        @else
+                            <p>No data.</p>
+                        @endif
                     </div>
                 </div>
             </div>
