@@ -28,5 +28,3 @@ Route::get('/grade_11/index/{view}/{academic_record}', [GradeElevenController::c
 
 Route::get('/grade11_add_student', [AddStudent::class, 'render'])->name('add_student_grade11');
 Route::get('/grade_11_checklist', [Checklist::class, 'render'])->name('checklist_grade_11');
-
-Route::get('/try', [Form::class, 'render'])->name('try');
