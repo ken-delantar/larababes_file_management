@@ -38,10 +38,8 @@
                     @livewire('sidebar')
                 </div>
             
-                <div class="py-12" style="flex-grow: 1;"> 
+                <div class="py-5" style="flex-grow: 1;"> 
                     {{ $slot }}
-
-                    {{-- @livewire('grade11.add-student') --}}
                 </div>
             </main>
         </div>

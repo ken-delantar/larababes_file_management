@@ -24,12 +24,8 @@
                         @livewire('Grade11.filtering-and-modals')
                     </div>
 
-                    {{-- <div class="mt-3">
-                        @livewire('Grade11.student-table')
-                    </div> --}}
-
                     <div class="mt-3">
-                        @livewire('trial')
+                        @livewire('Grade11.student-table')
                     </div>
                 </div>
             </div>
@@ -39,6 +35,12 @@
             <div>
                 @livewire('Grade11.add-student')
             </div>
+        @endif
+
+        @if ($view === 'student_profile')
+            @livewire('Grade11.student-profile', [
+                'academic_record' => $academic_record
+            ])
         @endif
     </x-slot>
 </x-app-layout>

@@ -13,7 +13,7 @@
         
             <x-slot name="content">
                 @foreach ($school_years as $school_year)
-                    <x-dropdown-link wire:click="filterBySchoolYear({{ $school_year->id }})">
+                    <x-dropdown-link>
                         {{ $school_year->year_start }} - {{ $school_year->year_end }}
                     </x-dropdown-link>
                 @endforeach
@@ -37,7 +37,7 @@
         
             <x-slot name="content">
                 @foreach ($strands as $strand)
-                    <x-dropdown-link wire:click="filterByStrand({{ $strand->id }})">
+                    <x-dropdown-link>
                         {{ $strand->strand }}
                     </x-dropdown-link>
                 @endforeach
@@ -57,7 +57,7 @@
         
             <x-slot name="content">
                 @foreach ($sections as $section)
-                    <x-dropdown-link wire:click="filterBySection({{ $section->id }})">
+                    <x-dropdown-link>
                         {{ $section->section_number }}
                     </x-dropdown-link>
                 @endforeach
@@ -122,7 +122,7 @@
         <x-slot name="content">
             <div class="space-y-4">
                 {{-- School Year --}}
-                <div>
+                {{-- <div>
                     <x-label for="schoolYear" value="School Year" class="dark:text-white" />
                     <select id="schoolYear" wire:model="sectionSchoolYear" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:ring focus:ring-indigo-200">
                         <option selected value="">SELECT SCHOOL YEAR</option>
@@ -131,10 +131,10 @@
                         @endforeach
                     </select>
                     @error('sectionSchoolYear') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
-                </div>
+                </div> --}}
     
                 {{-- Strand --}}
-                <div>
+                {{-- <div>
                     <x-label for="strand" value="Strand" class="dark:text-white" />
                     <select id="strand" wire:model="sectionStrand" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:ring focus:ring-indigo-200">
                         <option selected value="">SELECT STRAND</option>
@@ -143,7 +143,7 @@
                         @endforeach
                     </select>
                     @error('sectionStrand') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
-                </div>
+                </div> --}}
     
                 {{-- Section Number --}}
                 <div>
@@ -173,21 +173,21 @@
     
     <script>
         document.addEventListener('change', function () {
-            const schoolYearSelect = document.getElementById('schoolYear');
-            const strandSelect = document.getElementById('strand');
+            // const schoolYearSelect = document.getElementById('schoolYear');
+            // const strandSelect = document.getElementById('strand');
             const sectionNumberInput = document.getElementById('section_number');
             const previewInput = document.getElementById('preview');
     
-            schoolYearSelect.addEventListener('change', updatePreview);
-            strandSelect.addEventListener('change', updatePreview);
-            sectionNumberInput.addEventListener('input', updatePreview);
+            // schoolYearSelect.addEventListener('change', updatePreview);
+            // strandSelect.addEventListener('change', updatePreview);
+            sectionNumberInput.addEventListener('change', updatePreview);
     
             function updatePreview() {
-                const schoolYearText = schoolYearSelect.options[schoolYearSelect.selectedIndex]?.text;
-                const strandText = strandSelect.options[strandSelect.selectedIndex]?.text;
+                // const schoolYearText = schoolYearSelect.options[schoolYearSelect.selectedIndex]?.text;
+                // const strandText = strandSelect.options[strandSelect.selectedIndex]?.text;
                 const sectionNumber = 11 +sectionNumberInput.value;
     
-                const previewText = `${schoolYearText ? schoolYearText : ''} ${strandText ? strandText : ''}${sectionNumber ? sectionNumber : ''}`;
+                const previewText = `${sectionNumber ? sectionNumber : ''}`;
                 previewInput.value = previewText.trim();
             }
         });

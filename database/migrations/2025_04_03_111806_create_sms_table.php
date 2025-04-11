@@ -47,7 +47,9 @@ return new class extends Migration
 
         Schema::create('academic_records', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
+            $table->foreignId('student_id')->constrained('students')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->foreignId('strand_id')->constrained('strands')->onDelete('cascade');
             $table->foreignId('school_year_id')->constrained('school_years')->onDelete('cascade');
             $table->foreignId('section_id')->constrained('sections')->onDelete('cascade');
