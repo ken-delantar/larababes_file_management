@@ -29,7 +29,7 @@ class StudentTable extends DataTableComponent
         $query = AcademicRecord::query()
             ->with(['student', 'section', 'schoolYear', 'strand'])
             ->whereHas('section', function ($query) {
-                $query->where('grade_level', 12); 
+                $query->where('grade_level', 11); 
             });
 
         if (isset($this->filters['school_year']) && $this->filters['school_year']) {

@@ -109,7 +109,7 @@
                             <x-input id="category" type="text" class="mt-1 block w-full" wire:model="category" readonly />
                             <x-input-error for="category" class="mt-2" />
                         @else
-                            <p>No data.</p>
+                            <x-input type="text" class="mt-1 block w-full" value='No data.' readonly />
                         @endif
                     </div>
             
@@ -119,17 +119,17 @@
                             <x-input id="billing_status" type="text" class="mt-1 block w-full" wire:model="billing_status" readonly />
                             <x-input-error for="billing_status" class="mt-2" />
                         @else
-                            <p>No data.</p>
+                            <x-input type="text" class="mt-1 block w-full" value='No data.' readonly />
                         @endif
                     </div>
             
                     <div class="col-span-1 sm:col-span-4">
+                        <x-label for="vms_billing_status" value="VMS Billing Status" />
                         @if ($vms_billing_status)
-                            <x-label for="vms_billing_status" value="VMS Billing Status" />
                             <x-input id="vms_billing_status" type="text" class="mt-1 block w-full" wire:model="vms_billing_status" readonly />
                             <x-input-error for="vms_billing_status" class="mt-2" />
                         @else
-                            <p>No data.</p>
+                            <x-input type="text" class="mt-1 block w-full" value='No data.' readonly />
                         @endif
                     </div>
             
@@ -139,7 +139,7 @@
                             <x-input id="approved_voucher" type="text" class="mt-1 block w-full" wire:model="approved_voucher" readonly />
                             <x-input-error for="approved_voucher" class="mt-2" />
                         @else
-                            <p>No data.</p>
+                            <x-input type="text" class="mt-1 block w-full" value='No data.' readonly />
                         @endif
                     </div>
             
@@ -149,7 +149,7 @@
                             <x-input id="payee_fee" type="text" class="mt-1 block w-full" wire:model="payee_fee" readonly />
                             <x-input-error for="payee_fee" class="mt-2" />
                         @else
-                            <p>No data.</p>
+                            <x-input type="text" class="mt-1 block w-full" value='No data.' readonly />
                         @endif
                     </div>
                 </div>
