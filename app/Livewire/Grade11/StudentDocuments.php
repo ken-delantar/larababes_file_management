@@ -47,10 +47,8 @@ class StudentDocuments extends Component
         $this->academic_record = AcademicRecord::where('student_id', $this->student_id)->first();
         
         if ($this->docs) {
-            // Fetch checklist data based on the document_id
             $checklist = Checklist::where('document_id', $this->docs->id)->first();
             
-            // If checklist exists, initialize the checkbox values from the database
             if ($checklist) {
                 $this->checklistData = [
                     'form_137' => $checklist->form_137 ?? false,
@@ -71,7 +69,6 @@ class StudentDocuments extends Component
     public function checklist()
     {
         try {
-            // Validate the checklist data
             $data = $this->validate([
                 'checklistData.form_137' => 'nullable|boolean',
                 'checklistData.form_138' => 'nullable|boolean',
@@ -85,7 +82,6 @@ class StudentDocuments extends Component
                 'checklistData.af_five' => 'nullable|boolean',
             ]);
 
-            // Retrieve or create the document for the student
             $document = Document::firstOrCreate([
                 'student_id' => $this->student->id
             ]);
@@ -97,7 +93,7 @@ class StudentDocuments extends Component
 
             session()->flash('message', 'Checklist saved successfully.');
         } catch (\Exception $e) {
-            session()->flash('message', 'Failed to save checklist: ' . Str::limit($e->getMessage(), 200));
+            session()->flash('message', 'Failed to save checklist: ' . Str::limit($e->getMessage(), 30));
         }
     }
 
