@@ -39,7 +39,6 @@ Route::get('/trial', function () {
 Route::get('/document/view/{id}', function ($id) {
     $document = DocumentRecord::findOrFail($id);
 
-    // Detect MIME type dynamically
     $finfo = new finfo(FILEINFO_MIME_TYPE);
     $mimeType = $finfo->buffer($document->docs);
 

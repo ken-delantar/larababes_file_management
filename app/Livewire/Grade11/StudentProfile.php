@@ -64,6 +64,7 @@ class StudentProfile extends Component
         $this->update_student_profile();
         $this->update_academic_record();
         $this->update_additional_information();
+        $this->dispatch('updated');
     }
 
     public function update_student_profile(){
