@@ -9,10 +9,10 @@
         </x-slot>
 
         <x-slot name='aside'>
-            <x-secondary-button>
+            <x-secondary-button wire:click='back'>
                 Back
             </x-secondary-button>
-            <x-button>
+            <x-button wire:click='save'>
                 Information
             </x-button>
         </x-slot>
@@ -50,13 +50,13 @@
 
         <div class="flex-1 p-4 rounded">
             <div class="w-full mb-5">
-                <x-label for='student_number' value='Student #' />
-                <x-input wire:model='student_number' value='210101227' class="w-full" />
+                <x-label for='student_id' value='Student #' />
+                <x-input id="student_id" wire:model='student_id' class="w-full" />
             </div>
             
             <div class="w-full mb-5">
                 <x-label for='name' value='Name' />
-                <x-input wire:model='name' value='Juan Delacruz' class="w-full" />
+                <x-input id="name" wire:model='name' class="w-full" />
             </div>
 
             <x-section-border />
@@ -107,23 +107,26 @@
                                 </div>
                             
                                 <div class="flex items-center space-x-4 text-nowrap mb-4">
-                                    <x-checkbox id="form_138" wire:model='form_138' />
-                                    <x-label for='form_138' value='Form 138' />
+                                    <x-checkbox id="diploma" wire:model='diploma' />
+                                    <x-label for='diploma' value='Diploma' />
                                 </div>
                             
                                 <div class="flex items-center space-x-4 text-nowrap mb-4">
-                                    <x-checkbox id="good_moral" wire:model='good_moral' />
-                                    <x-label for='good_moral' value='Good Moral' />
+                                    <x-checkbox id="brgy_certificate" wire:model='brgy_certificate' />
+                                    <x-label for='brgy_certificate' value='Brgy. Certificate' />
                                 </div>
 
                                 <div class="flex items-center space-x-4 text-nowrap mb-4">
-                                    <x-checkbox id="good_moral" wire:model='good_moral' />
-                                    <x-label for='good_moral' value='Good Moral' />
+                                    <x-checkbox id="ncae" wire:model='ncae' />
+                                    <x-label for='ncae' value='NCAE' />
+                                </div>
+
+                                <div class="flex items-center space-x-4 text-nowrap mb-4">
+                                    <x-checkbox id="af_five" wire:model='af_five' />
+                                    <x-label for='af_five' value='AF-5' />
                                 </div>
                             </div>
-                        </div>
-                        
-                                             
+                        </div>             
                     </x-slot>
 
                     <x-slot name='actions'>

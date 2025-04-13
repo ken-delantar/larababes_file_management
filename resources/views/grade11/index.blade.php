@@ -17,7 +17,8 @@
                 overflow-y: auto;
             }
         </style>
-        {{-- @if ($view === 'data')
+
+        @if ($view === 'data')
             <div class="w-full mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white dark:bg-gray-800 shadow-xl sm:rounded-lg p-6">
                     <div>
@@ -41,8 +42,10 @@
             @livewire('Grade11.student-profile', [
                 'academic_record' => $academic_record
             ])
-        @endif --}}
+        @endif
 
-        @livewire('grade11.student-documents')
+        @if ($view == 'student_documents')
+            @livewire('grade11.student-documents', ['student_id' => $student_id])
+        @endif
     </x-slot>
 </x-app-layout>

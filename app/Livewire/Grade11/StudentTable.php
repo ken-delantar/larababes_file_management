@@ -71,6 +71,10 @@ class StudentTable extends DataTableComponent
         ];
     }
 
+    public function documents_view($student_id = null){
+        return redirect()->route('index_grade_documents', ['student_documents', 'student_id' => $student_id]);
+    }
+
     public function filters(): array
     {
         return [

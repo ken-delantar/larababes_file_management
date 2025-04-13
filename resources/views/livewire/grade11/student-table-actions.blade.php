@@ -1,3 +1,5 @@
 <div class="flex gap-1">
-    <x-button>Document</x-button>
+    <x-button wire:click="documents_view('{{ $student['student.id'] }}')">
+        Document
+    </x-button>
 </div>

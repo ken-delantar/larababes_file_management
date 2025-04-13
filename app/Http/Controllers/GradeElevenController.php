@@ -16,6 +16,10 @@ class GradeElevenController extends Controller
         return view('grade11.index', compact('view', 'academic_record'));
     }
 
+    public function student_documents($view, $student_id){
+        return view('grade11.index', compact('view', 'student_id'));
+    }
+
     public function upload_file(Request $request){
         // 231103388
 
