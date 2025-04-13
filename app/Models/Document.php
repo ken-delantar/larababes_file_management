@@ -13,4 +13,8 @@ class Document extends Model
     public function documentRecords(){
         return $this->hasMany(DocumentRecord::class, 'document_record');
     }
+
+    public function checklist(){
+        return $this->hasOne(Checklist::class);
+    }
 }

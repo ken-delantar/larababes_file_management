@@ -86,7 +86,7 @@
             <x-section-border />
 
             <div class="w-full mb-5">
-                <x-form-section submit=''>
+                <x-form-section submit='checklist'>
                     <x-slot name='title'>
                         Document Checklist
                     </x-slot>
@@ -106,7 +106,11 @@
                                     'pic' => '2x2'
                                 ] as $id => $label)
                                     <div class="flex items-center space-x-4 text-nowrap mb-4">
-                                        <x-checkbox id="{{ $id }}" wire:model="{{ $id }}" />
+                                        @if ($checklistData[$id])
+                                            <x-checkbox id="{{ $id }}" wire:model="checklistData.{{ $id }}" checked />
+                                        @else
+                                            <x-checkbox id="{{ $id }}" wire:model="checklistData.{{ $id }}" />
+                                        @endif
                                         <x-label for="{{ $id }}" value="{{ $label }}" class="dark:text-gray-300" />
                                     </div>
                                 @endforeach
@@ -121,11 +125,15 @@
                                     'af_five' => 'AF-5'
                                 ] as $id => $label)
                                     <div class="flex items-center space-x-4 text-nowrap mb-4">
-                                        <x-checkbox id="{{ $id }}" wire:model="{{ $id }}" />
+                                        @if ($checklistData[$id])
+                                            <x-checkbox id="{{ $id }}" wire:model="checklistData.{{ $id }}" checked />
+                                        @else
+                                            <x-checkbox id="{{ $id }}" wire:model="checklistData.{{ $id }}" />
+                                        @endif
                                         <x-label for="{{ $id }}" value="{{ $label }}" class="dark:text-gray-300" />
                                     </div>
                                 @endforeach
-                            </div>
+                            </div>             
                         </div>             
                     </x-slot>
 
