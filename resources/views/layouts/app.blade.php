@@ -34,7 +34,7 @@
 
             <!-- Page Content -->
             <main class="flex h-screen bg-gray-100 dark:bg-gray-900">
-                <div style="width: fix-content;"> 
+                <div class="w-64 sticky"> 
                     @livewire('sidebar')
                 </div>
             

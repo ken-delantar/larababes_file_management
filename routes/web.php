@@ -28,7 +28,6 @@ Route::middleware([
     Route::get('/grade_11_index/{view}/{student_id}', [GradeElevenController::class, 'student_documents'])->name('index_grade_documents');
 
     Route::get('/grade11_add_student', [AddStudent::class, 'render'])->name('add_student_grade11');
-    Route::get('/grade_11_checklist', [Checklist::class, 'render'])->name('checklist_grade_11');
 });
 
 

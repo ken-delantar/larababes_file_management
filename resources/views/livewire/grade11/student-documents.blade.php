@@ -18,23 +18,6 @@
                     Information
                 </x-button>
             </div>
-
-            <div class="block">
-                @if (session()->has('message'))
-                <div 
-                    x-data="{ show: true }" 
-                    x-init="setTimeout(() => show = false, 5000)" 
-                    x-show="show"
-                    class="mt-2 text-sm px-4 py-2 rounded transition-all duration-300 ease-in-out"
-                    :class="{
-                        'text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-900': '{{ session('type') }}' === 'success',
-                        'text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-900': '{{ session('type') }}' === 'error',
-                    }"
-                >
-                    {{ session('message') }}
-                </div>
-            @endif
-            </div>
         </x-slot>
     </x-section-title>
 
@@ -68,6 +51,9 @@
                         Upload
                     </x-secondary-button>
                 </div>
+                <x-action-message on="fileUploded" class="mt-3">
+                    Uploaded.
+                </x-action-message>
                 @error('file_upload')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
             </form>
         </div>
@@ -138,6 +124,10 @@
                     </x-slot>
 
                     <x-slot name='actions'>
+                        <x-action-message on="checklistUpdated" class="mr-5">
+                            Saved.
+                        </x-action-message>
+
                         <x-button type='submit'>
                             Save
                         </x-button>

@@ -92,8 +92,9 @@ class StudentDocuments extends Component
             );
 
             session()->flash('message', 'Checklist saved successfully.');
+            $this->dispatch('checklistUpdated');
         } catch (\Exception $e) {
-            session()->flash('message', 'Failed to save checklist: ' . Str::limit($e->getMessage(), 30));
+            session()->flash('message', 'Failed to save: ' . Str::limit($e->getMessage(), 300));
         }
     }
 
@@ -120,8 +121,8 @@ class StudentDocuments extends Component
             ]);
 
             $this->reset('file_upload');
+            $this->dispatch('fileUploded');
             session()->flash('message', 'File uploaded successfully.');
-
         } catch (\Exception $e) {
             session()->flash('message', 'Failed to upload: ' . Str::limit($e->getMessage(), 30));
         }
