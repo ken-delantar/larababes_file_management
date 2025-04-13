@@ -17,7 +17,7 @@
         <!-- Styles -->
         @livewireStyles
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased overflow-hidden">
         <x-banner />
 
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -33,15 +33,16 @@
             @endif
 
             <!-- Page Content -->
-            <main class="flex h-screen bg-gray-100 dark:bg-gray-900">
-                <div class="w-64 sticky"> 
+            <main class="flex h-[calc(100vh-4rem)] bg-gray-100 dark:bg-gray-900">
+                <div class="w-64"> 
                     @livewire('sidebar')
                 </div>
             
-                <div class="py-5" style="flex-grow: 1;"> 
+                <div class="flex-1 overflow-auto p-6">
                     {{ $slot }}
                 </div>
             </main>
+            
         </div>
 
         @stack('modals')
