@@ -19,7 +19,7 @@ class StudentProfile extends Component
     public $student;
 
     public $student_id;
-    public $name, $email = 'juandelacruz@email.com', $sex;
+    public $name, $email = '', $sex;
     public $school_year_11, $strand_11, $section_11, $year_end_status_11;
     public $category = '', $billing_status, $vms_billing_status, $approved_voucher, $payee_fee;
     public $lrn, $school_origin;
@@ -103,9 +103,11 @@ class StudentProfile extends Component
     {
         // public $lrn, $school_origin;
 
+        $this->school_origin = trim(ucfirst(strtolower($this->school_origin)));
+
         $this->validate([
             'lrn' => 'required|integer',
-            'school_origin' => 'required|in:Public,Private,PRIVATE,PUBLIC'
+            'school_origin' => 'required|in:Public,Private'
         ]);
 
         $this->student->lrn = $this->lrn;

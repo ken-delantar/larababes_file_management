@@ -121,8 +121,8 @@ class StudentDocuments extends Component
             ]);
 
             $this->reset('file_upload');
+            $this->mount();
             $this->dispatch('fileUploded');
-            session()->flash('message', 'File uploaded successfully.');
         } catch (\Exception $e) {
             session()->flash('message', 'Failed to upload: ' . Str::limit($e->getMessage(), 30));
         }
