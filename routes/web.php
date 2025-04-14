@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\GradeElevenController;
 use App\Http\Controllers\GradeTwelveController;
 use App\Livewire\Grade11\Index as Grade11Index;
+use App\Models\AcademicRecord;
+use App\Models\Section;
+use App\Models\Strand;
+use App\Models\Student;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,17 +25,25 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        $students = Student::all();
+        $strands = Strand::all();
+        $academic_records = AcademicRecord::all();
+
+        return view('dashboard', compact('students', 'strands', 'academic_records'));
     })->name('dashboard');
     
     Route::get('/grade_11_index/{view}', [GradeElevenController::class, 'render'])->name('index_grade_11');
     Route::get('/grade_11/index/{view}/{academic_record}', [GradeElevenController::class, 'student_profile'])->name('index_grade_11_profile');
     Route::get('/grade_11_index/{view}/{student_id}', [GradeElevenController::class, 'student_documents'])->name('index_grade_11_documents');
-    Route::get('/grade11_add_student', [AddStudent::class, 'render'])->name('add_student_grade11');
+    // Route::get('/grade11_add_student', [AddStudent::class, 'render'])->name('add_student_grade11');
 
     Route::get('/grade_12_index/{view}', [GradeTwelveController::class, 'render'])->name('index_grade_12');
     Route::get('/grade_12/index/{view}/{academic_record}', [GradeTwelveController::class, 'student_profile'])->name('index_grade_12_profile');
     Route::get('/grade_12_index/{view}/{student_id}', [GradeTwelveController::class, 'student_documents'])->name('index_grade_12_documents');
+
+    Route::get('/document_checklist', function(){
+        return view('checklist_table');
+    })->name('document_checklist');
 });
 
 

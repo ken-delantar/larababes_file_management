@@ -27,7 +27,7 @@ class FilteringAndModals extends Component
     {
         $this->school_years = SchoolYear::all();
         $this->strands = Strand::all();
-        $this->sections = Section::all();
+        $this->sections = Section::where('grade_level', 11)->get();
     }
 
     // Show section modal

@@ -19,7 +19,7 @@
                     </svg>
                     Dashboard
                 </h4>
-                <a href="#"
+                <a href="{{ route('dashboard') }}"
                    class="flex items-center gap-2 px-4 py-2 text-white dark:text-gray-300 hover:bg-rose-500 dark:hover:bg-blue-700 rounded transition duration-200">
                     <!-- Overview Icon -->
                     <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -75,7 +75,7 @@
                     </svg>
                     Management
                 </h4>
-                <a href=""
+                <a href="{{ route('document_checklist') }}"
                    class="flex items-center gap-2 px-4 py-2 text-white dark:text-gray-300 hover:bg-rose-500 dark:hover:bg-blue-700 rounded transition duration-200">
                     <!-- Folder Check Icon -->
                     <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
