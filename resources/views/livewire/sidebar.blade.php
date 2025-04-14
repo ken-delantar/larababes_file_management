@@ -52,7 +52,7 @@
                     </svg>
                     Grade 11
                 </a>
-                <a href="#"
+                <a href="{{ route('index_grade_12', 'data') }}"
                    class="flex items-center gap-2 px-4 py-2 text-white dark:text-gray-300 hover:bg-rose-500 dark:hover:bg-blue-700 rounded transition duration-200">
                     <!-- Book Icon -->
                     <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

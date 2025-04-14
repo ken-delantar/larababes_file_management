@@ -6,18 +6,18 @@ use App\Models\DocumentRecord;
 use App\Models\Document;
 use Illuminate\Http\Request;
 
-class GradeElevenController extends Controller
+class GradeTwelveController extends Controller
 {
     public function render($view){
-        return view('grade11.index', compact('view'));
+        return view('grade12.index', compact('view'));
     }
 
     public function student_profile($view, $academic_record){
-        return view('grade11.index', compact('view', 'academic_record'));
+        return view('grade12.index', compact('view', 'academic_record'));
     }
 
     public function student_documents($view, $student_id){
-        return view('grade11.index', compact('view', 'student_id'));
+        return view('grade12.index', compact('view', 'student_id'));
     }
 
     // public function upload_file(Request $request){

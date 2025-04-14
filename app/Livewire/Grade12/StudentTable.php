@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Grade11;
+namespace App\Livewire\Grade12;
 
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -18,7 +18,7 @@ class StudentTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id')
-            ->setTableRowUrl(fn ($row) => route('index_grade_11_profile', ['student_profile', 'academic_record' => $row]))
+            ->setTableRowUrl(fn ($row) => route('index_grade_12_profile', ['student_profile', 'academic_record' => $row]))
             ->setEagerLoadAllRelationsStatus(true)
             ->setLoadingPlaceholderEnabled()
             ->setLoadingPlaceholderStatus(true);
@@ -29,7 +29,7 @@ class StudentTable extends DataTableComponent
         $query = AcademicRecord::query()
             ->with(['student', 'section', 'schoolYear', 'strand'])
             ->whereHas('section', function ($query) {
-                $query->where('grade_level', 11); 
+                $query->where('grade_level', 12); 
             });
 
         if (isset($this->filters['school_year']) && $this->filters['school_year']) {
@@ -66,13 +66,13 @@ class StudentTable extends DataTableComponent
             Column::make("School Origin", 'student.school_origin')->sortable()->searchable(),
             Column::make("Status", "student.status")->sortable(),
             Column::make('Actions')
-                ->label(fn ($row, Column $column) => view('livewire.grade11.student-table-actions')->with('student', $row))
+                ->label(fn ($row, Column $column) => view('livewire.grade12.student-table-actions')->with('student', $row))
                 ->unclickable(),
         ];
     }
 
     public function documents_view($student_id = null){
-        return redirect()->route('index_grade_11_documents', ['student_documents', 'student_id' => $student_id]);
+        return redirect()->route('index_grade_12_documents', ['student_documents', 'student_id' => $student_id]);
     }
 
     public function filters(): array
