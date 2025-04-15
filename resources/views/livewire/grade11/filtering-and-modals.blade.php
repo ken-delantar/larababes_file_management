@@ -41,6 +41,10 @@
                         {{ $strand->strand }}
                     </x-dropdown-link>
                 @endforeach
+
+                <x-dropdown-link wire:click="addStrand" type="button">
+                    ADD STRAND
+                </x-dropdown-link>
             </x-slot>
         </x-dropdown>
     
@@ -63,7 +67,7 @@
                 @endforeach
     
                 <x-dropdown-link wire:click="addSection">
-                    Add Section
+                    ADD SECTION
                 </x-dropdown-link>
             </x-slot>
         </x-dropdown>
@@ -75,7 +79,7 @@
 
     <x-dialog-modal wire:model="addSchoolYearModal">
         <x-slot name="title">
-            Add School Year
+            NEW SCHOOL YEAR
 
             <hr class="mt-1">
         </x-slot>
@@ -113,39 +117,43 @@
         </x-slot>
     </x-dialog-modal>
 
-    <x-dialog-modal wire:model="addSectionModal">
+    <x-dialog-modal wire:model="addStrandModal">
         <x-slot name="title">
-            Add Section
+            NEW STRAND
             <hr class="mt-1 border-gray-300 dark:border-gray-600">
         </x-slot>
     
         <x-slot name="content">
             <div class="space-y-4">
-                {{-- School Year --}}
-                {{-- <div>
-                    <x-label for="schoolYear" value="School Year" class="dark:text-white" />
-                    <select id="schoolYear" wire:model="sectionSchoolYear" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:ring focus:ring-indigo-200">
-                        <option selected value="">SELECT SCHOOL YEAR</option>
-                        @foreach ($school_years as $school_year)
-                            <option value="{{ $school_year->id }}">{{ $school_year->year_start }} - {{ $school_year->year_end }}</option>
-                        @endforeach
-                    </select>
-                    @error('sectionSchoolYear') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
-                </div> --}}
+                <div>
+                    <x-label for="section_number" value="Section Number" class="dark:text-white" />
+                    <x-input id="section_number" wire:model="sectionNumber" type="text" class="mt-1 block w-full dark:bg-gray-800 dark:border-gray-600 dark:text-white" />
+                    @error('sectionNumber') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
+                </div>
+
+
+            </div>
+        </x-slot>
     
-                {{-- Strand --}}
-                {{-- <div>
-                    <x-label for="strand" value="Strand" class="dark:text-white" />
-                    <select id="strand" wire:model="sectionStrand" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white shadow-sm focus:ring focus:ring-indigo-200">
-                        <option selected value="">SELECT STRAND</option>
-                        @foreach ($strands as $strand)
-                            <option value="{{ $strand->id }}">{{ strtoupper($strand->strand) }}</option>
-                        @endforeach
-                    </select>
-                    @error('sectionStrand') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
-                </div> --}}
+        <x-slot name="footer">
+            <x-secondary-button wire:click="$set('addStrandModal', false)">
+                Dismiss
+            </x-secondary-button>
     
-                {{-- Section Number --}}
+            <x-button class="ml-2" wire:click="save('section')">
+                Save
+            </x-button>
+        </x-slot>
+    </x-dialog-modal>
+
+    <x-dialog-modal wire:model="addSectionModal">
+        <x-slot name="title">
+            ADD SECTION
+            <hr class="mt-1 border-gray-300 dark:border-gray-600">
+        </x-slot>
+    
+        <x-slot name="content">
+            <div class="space-y-4">
                 <div>
                     <x-label for="section_number" value="Section Number" class="dark:text-white" />
                     <x-input id="section_number" wire:model="sectionNumber" type="text" class="mt-1 block w-full dark:bg-gray-800 dark:border-gray-600 dark:text-white" />
@@ -173,18 +181,11 @@
     
     <script>
         document.addEventListener('change', function () {
-            // const schoolYearSelect = document.getElementById('schoolYear');
-            // const strandSelect = document.getElementById('strand');
             const sectionNumberInput = document.getElementById('section_number');
             const previewInput = document.getElementById('preview');
-    
-            // schoolYearSelect.addEventListener('change', updatePreview);
-            // strandSelect.addEventListener('change', updatePreview);
             sectionNumberInput.addEventListener('change', updatePreview);
     
             function updatePreview() {
-                // const schoolYearText = schoolYearSelect.options[schoolYearSelect.selectedIndex]?.text;
-                // const strandText = strandSelect.options[strandSelect.selectedIndex]?.text;
                 const sectionNumber = 11 +sectionNumberInput.value;
     
                 const previewText = `${sectionNumber ? sectionNumber : ''}`;

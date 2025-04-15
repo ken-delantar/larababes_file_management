@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('student_documents', function (Blueprint $table) {
+        Schema::create('strand_majors', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('strand_id')->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->string('major');
             $table->timestamps();
         });
     }
@@ -22,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('student_documents');
+        Schema::dropIfExists('major');
     }
 };

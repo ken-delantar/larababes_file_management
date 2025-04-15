@@ -10,14 +10,9 @@ use App\Models\Section;
 
 class FilteringAndModals extends Component
 {
-    public $addSchoolYearModal = false, $addSectionModal = false;
+    public $addSchoolYearModal = false, $addSectionModal = false, $addStrandModal = false;
     public $schoolYearStart, $schoolYearEnd, $classStart;
     public $sectionSchoolYear, $sectionStrand, $sectionNumber;
-
-    // Filtering variables
-    public $schoolYearFilter = null;
-    public $strandFilter = null;
-    public $sectionFilter = null;
 
     public $school_years;
     public $strands;
@@ -39,6 +34,10 @@ class FilteringAndModals extends Component
     public function addSection()
     {
         $this->addSectionModal = true;
+    }
+
+    public function addStrand(){
+        $this->addStrandModal = true;
     }
 
     // Save School Year or Section
@@ -82,8 +81,6 @@ class FilteringAndModals extends Component
 
             try {
                 Section::create([
-                    // 'school_year_id' => $this->sectionSchoolYear,
-                    // 'strand_id' => $this->sectionStrand,
                     'section_number' => 11 . $this->sectionNumber,
                     'grade_level' => 11,
                 ]);
@@ -96,42 +93,6 @@ class FilteringAndModals extends Component
                 return redirect()->back()->with('error', $e->getMessage());
             }
         }
-    }
-
-    // Filter by School Year
-    public function filterBySchoolYear($schoolYearId)
-    {
-        $this->schoolYearFilter = $schoolYearId;
-        $this->updateSections();
-    }
-
-    // // Filter by Strand
-    public function filterByStrand($strandId)
-    {
-        $this->strandFilter = $strandId;
-        $this->updateSections();
-    }
-
-    // // Filter by Section
-    public function filterBySection($sectionId)
-    {
-        $this->sectionFilter = $sectionId;
-    }
-
-    // // Update sections based on selected filters
-    protected function updateSections()
-    {
-        $query = Section::query();
-
-        if ($this->schoolYearFilter) {
-            $query->where('school_year_id', $this->schoolYearFilter);
-        }
-
-        if ($this->strandFilter) {
-            $query->where('strand_id', $this->strandFilter);
-        }
-
-        $this->sections = $query->get();
     }
 
     public function addStudent(){

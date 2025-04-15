@@ -104,15 +104,16 @@ class StudentTable extends DataTableComponent
 
             SelectFilter::make('Section')
                 ->options(
-                    Section::all()->pluck('section_number', 'id')->toArray() + [null => 'All']
+                    [null => 'All'] + Section::where('grade_level', 12)->pluck('section_number', 'id')->toArray()
                 )
-                ->filter(function (Builder $builder, string $value) {
+                ->filter(function (Builder $builder, $value) {
                     if ($value) {
                         $builder->whereHas('section', function ($query) use ($value) {
-                            $query->where('id', $value);
+                            $query->where('id', $value)->where('grade_level', 12);
                         });
                     }
-                }),
+                }
+            ),
         ];
     }
 }

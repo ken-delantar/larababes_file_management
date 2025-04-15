@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('document_id')->constrained('documents')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-                
             $table->boolean('form_137')->nullable()->default(false);
             $table->boolean('form_138')->nullable()->default(false);
             $table->boolean('good_moral')->nullable()->default(false);

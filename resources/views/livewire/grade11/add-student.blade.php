@@ -172,16 +172,9 @@
             </div>
 
             <x-slot name="actions">
-                @if (session()->has('error'))
-                    <div>
-                        <div class="alert alert-danger">
-                            {{ session()->get('error') }}
-                        </div>
-                    </div>
-                @endif
-                <p class="alert alert-warning" wire:offline>
-                    Whoops, your device has lost connection
-                </p>
+                <x-action-message class="me-3" on="inserted'">
+                    Inserted
+                </x-action-message>
             
                 <x-danger-button wire:click='back' class="m-1">
                     Back
