@@ -65,9 +65,21 @@ class AddStudent extends Component
             return redirect()->back()->with('error', $e->getMessage());
         }
 
-        $this->reset();
         $this->dispatch('inserted');
-        return redirect()->back()->with('success', 'Student added succesfully.');
+        $this->reset(
+            'name',
+            'sex',
+            'student_number',
+            'school_year',
+            'strand',
+            'section',
+            'category',
+            'billing_status',
+            'status',
+            'condition',
+            'lrn',
+            'school_origin'
+        );
     }
 
     public function back()

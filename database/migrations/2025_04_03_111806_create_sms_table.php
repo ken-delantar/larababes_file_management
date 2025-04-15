@@ -26,6 +26,7 @@ return new class extends Migration
         Schema::create('strands', function (Blueprint $table) {
             $table->id();
             $table->string('strand');
+            $table->string('name')->nullable()->default('Not Specified');
             $table->timestamps();
         });
 

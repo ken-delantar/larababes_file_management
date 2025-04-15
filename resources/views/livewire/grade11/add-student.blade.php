@@ -172,8 +172,8 @@
             </div>
 
             <x-slot name="actions">
-                <x-action-message class="me-3" on="inserted'">
-                    Inserted
+                <x-action-message on="inserted" class="mr-5">
+                    Saved.
                 </x-action-message>
             
                 <x-danger-button wire:click='back' class="m-1">

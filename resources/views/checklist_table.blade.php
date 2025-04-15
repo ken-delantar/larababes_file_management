@@ -23,5 +23,6 @@
                 @livewire('document-checklist')
             </div>
         </div>
+        
     </x-slot>
 </x-app-layout>
