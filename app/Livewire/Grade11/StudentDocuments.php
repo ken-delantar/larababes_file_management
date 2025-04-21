@@ -20,6 +20,7 @@ class StudentDocuments extends Component
 
     public $viewDocumentModal = false;
     public $file_id, $field;
+    public $fileMimeType;
 
     public $student_id, $name;
     public $student;
@@ -70,7 +71,21 @@ class StudentDocuments extends Component
         }
     }
 
-    public function viewDocument(){
+    public function viewDocument($file_id, $field)
+    {
+        $this->file_id = $file_id;
+        $this->field = $field;
+    
+        $doc = DocumentFile::find($file_id);
+        $fileData = $doc?->{$field};
+    
+        if ($fileData) {
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $this->fileMimeType = $finfo->buffer($fileData);
+        } else {
+            $this->fileMimeType = null;
+        }
+    
         $this->viewDocumentModal = true;
     }
     
@@ -129,8 +144,8 @@ class StudentDocuments extends Component
                 $sluggedFilename = Str::slug($filename, '_');
 
                 if (!in_array($sluggedFilename, $allowedFilenames)) {
-                    session()->flash('message', "Invalid file name: $filename. Allowed names: " . implode(', ', $allowedFilenames));
-                    return;
+                    session()->flash('message', "Invalid file name: $filename");
+                    break;
                 }
 
                 $blob = file_get_contents($file->getRealPath());
@@ -139,19 +154,18 @@ class StudentDocuments extends Component
                     $sluggedFilename => $blob,
                 ]);
 
-                if ($docFile){
-                    $this->mount(); 
+                if ($docFile){ 
                     $this->dispatch('fileUploded');
-                    return;
-                }else {
-                    new Exception('Something went wrong.');
                 }
             }
 
             $this->reset('file_uploads');
         } catch (\Exception $e) {
             session()->flash('message', 'Failed to upload: ' . Str::limit($e->getMessage(), 30));
+            $this->reset('file_uploads');
         }
+
+        $this->mount();
     }
 
     public function back(){
@@ -166,7 +180,9 @@ class StudentDocuments extends Component
     {
         $documents = [];
 
-        $documents = DocumentFile::where('document_id', $this->docs->id)->get();
+        if($this->docs){
+            $documents = DocumentFile::where('document_id', $this->docs->id)->get();
+        }
         
         return view('livewire.grade11.student-documents', [
             'documents' => $documents
