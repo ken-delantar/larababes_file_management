@@ -1,21 +1,22 @@
 <?php
 
 use App\Livewire\Form;
+use App\Models\Strand;
+use App\Models\Section;
+use App\Models\Student;
+use App\Models\SchoolYear;
+use App\Models\DocumentFile;
+use App\Models\AcademicRecord;
 use App\Models\DocumentRecord;
 use App\Livewire\Grade11\Checklist;
 use App\Livewire\Grade11\AddStudent;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Request;
 use App\Livewire\Grade11\ChecklistTable;
 use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\GradeElevenController;
 use App\Http\Controllers\GradeTwelveController;
 use App\Livewire\Grade11\Index as Grade11Index;
-use App\Models\AcademicRecord;
-use App\Models\DocumentFile;
-use App\Models\SchoolYear;
-use App\Models\Section;
-use App\Models\Strand;
-use App\Models\Student;
 
 Route::get('/', function () {
     return view('welcome');
@@ -56,28 +57,33 @@ Route::get('/trial', function () {
 })->name('trial');
 
 Route::get('/document/view/{id}', function ($id) {
+    $field = Request::get('field'); // get the ?field= value
+
     $document = DocumentFile::findOrFail($id);
 
-    $documentColumns = [
+    $allowedFields = [
         'form_137', 'form_138', 'good_moral', 'psa', 'pic',
         'esc_certificate', 'diploma', 'brgy_certificate', 'ncae', 'af_five'
     ];
 
-    foreach ($documentColumns as $column) {
-        if (!empty($document->{$column})) {
-            $fileData = $document->{$column};
-
-            $finfo = new finfo(FILEINFO_MIME_TYPE);
-            $mimeType = $finfo->buffer($fileData);
-
-            return Response::make($fileData, 200, [
-                'Content-Type' => $mimeType,
-                'Content-Disposition' => "inline; filename=\"$column\""
-            ]);
-        }
+    if (!in_array($field, $allowedFields)) {
+        abort(404, 'Invalid document field');
     }
-})->name('document.view');
 
+    $fileData = $document->{$field};
+
+    if (!$fileData) {
+        abort(404, 'Document not found');
+    }
+
+    $finfo = new finfo(FILEINFO_MIME_TYPE);
+    $mimeType = $finfo->buffer($fileData);
+
+    return Response::make($fileData, 200, [
+        'Content-Type' => $mimeType,
+        'Content-Disposition' => "inline; filename=\"$field\""
+    ]);
+})->name('document.view');
 
 Route::post('/upload', [GradeElevenController::class, 'upload_file'])->name('upload');
 

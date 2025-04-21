@@ -23,7 +23,6 @@
 
     <div class="flex flex-col md:flex-row gap-4 mt-4">
         <div class="flex-1 p-4 rounded bg-gray-50 dark:bg-gray-900">
-
             @forelse ($documents as $doc)
                 <div x-data="{ openForm137: false, openForm138: false, openGoodMoral: false, openPsa: false, openPic: false, openEsc: false, openDiploma: false, openBrgy: false, openNcae: false, openAfFive: false }">
                     @if ($doc->form_137)
@@ -166,7 +165,7 @@
                 </div>
             @endif --}}
 
-            <form wire:submit='uploadFile' class="mt-5">
+            {{-- <form wire:submit='uploadFile' class="mt-5">
                 <div class="mb-3 px-3">
                     <x-label for='file_upload' value='Note: uploading multiple documents at once is supported. File name must be one of the following: form_137, form_138, good_moral, psa, pic, esc_certificate, diploma, brgy_certificate, ncae, af_five' />
                 </div>
@@ -198,7 +197,7 @@
                         </div>
                     @endif
                 </div>
-            </form>
+            </form> --}}
         </div>
 
         <div class="flex-1 p-4 rounded bg-gray-50 dark:bg-gray-900">
@@ -215,7 +214,7 @@
             <x-section-border />
 
             <div class="w-full mb-5">
-                <x-form-section submit='checklist'>
+                {{-- <x-form-section submit='checklist'>
                     <x-slot name='title'>
                         Document Checklist
                     </x-slot>
@@ -275,7 +274,41 @@
                             Save
                         </x-button>
                     </x-slot>
-                </x-form-section>
+                </x-form-section> --}}
+
+                <form wire:submit='uploadFile'>
+                    <div class="mb-3 px-3">
+                        <x-label for='file_upload' value='Note: uploading multiple documents at once is supported. File name must be one of the following: form_137, form_138, good_moral, psa, pic, esc_certificate, diploma, brgy_certificate, ncae, af_five' />
+                    </div>
+    
+                    <div class="flex items-center gap-4 pr-12">
+                        <input 
+                            type="file" 
+                            id="file_upload" 
+                            wire:model="file_uploads" 
+                            multiple
+                            accept="application/pdf, image/jpeg, image/jpg, image/png" 
+                            class="w-full text-sm text-gray-500 dark:text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 dark:file:bg-blue-900 file:text-blue-700 dark:file:text-blue-300 hover:file:bg-blue-100 dark:hover:file:bg-blue-800"
+                        />
+    
+                        <x-secondary-button type='submit'>
+                            Upload
+                        </x-secondary-button>
+                    </div>
+                    <x-action-message on="fileUploded" class="mt-3">
+                        Uploaded.
+                    </x-action-message>
+                    @error('file_upload')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                    
+                    <div class="mt-3">
+                        @if (session()->has('message'))
+                            <div class="px-4 py-3 rounded relative" role="alert">
+                                <strong class="font-bold">Notice: </strong>
+                                <span class="block sm:inline">{{ session('message') }}</span>
+                            </div>
+                        @endif
+                    </div>
+                </form>
             </div>
         </div>
     </div>
