@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Grade11;
 
+use App\Livewire\DocumentChecklist;
 use Exception;
 use App\Models\Student;
 use Livewire\Component;
@@ -155,6 +156,15 @@ class StudentDocuments extends Component
                 ]);
 
                 if ($docFile){ 
+                    Checklist::updateOrCreate(
+                        [
+                            'document_id' => $docu->id
+                        ],
+                        [
+                            $sluggedFilename => true
+                        ]
+                    );
+
                     $this->dispatch('fileUploded');
                 }
             }

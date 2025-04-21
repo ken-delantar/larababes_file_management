@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Grade12;
 
+use App\Livewire\DocumentChecklist;
 use Exception;
 use App\Models\Student;
 use Livewire\Component;
@@ -11,11 +12,16 @@ use Illuminate\Support\Str;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Models\AcademicRecord;
+use App\Models\DocumentFile;
 use App\Models\DocumentRecord;
 
 class StudentDocuments extends Component
-{
+{   
     use WithPagination, WithFileUploads;
+
+    public $viewDocumentModal = false;
+    public $file_id, $field;
+    public $fileMimeType;
 
     public $student_id, $name;
     public $student;
@@ -23,7 +29,7 @@ class StudentDocuments extends Component
 
     public $academic_record;
 
-    public $file_upload;
+    public $file_uploads = [];
     public $form_137, $form_138, $good_moral, $psa, $pic, $esc_certificate, $diploma, $brgy_certificate, $ncae, $af_five;
 
     public $checklistData = [
@@ -65,6 +71,24 @@ class StudentDocuments extends Component
             }
         }
     }
+
+    public function viewDocument($file_id, $field)
+    {
+        $this->file_id = $file_id;
+        $this->field = $field;
+    
+        $doc = DocumentFile::find($file_id);
+        $fileData = $doc?->{$field};
+    
+        if ($fileData) {
+            $finfo = new \finfo(FILEINFO_MIME_TYPE);
+            $this->fileMimeType = $finfo->buffer($fileData);
+        } else {
+            $this->fileMimeType = null;
+        }
+    
+        $this->viewDocumentModal = true;
+    }
     
     public function checklist()
     {
@@ -101,47 +125,73 @@ class StudentDocuments extends Component
     public function uploadFile()
     {
         $this->validate([
-            'file_upload' => 'required|file|max:10240|mimetypes:application/pdf,image/jpeg,image/png,image/gif',
+            'file_uploads.*' => 'required|file|max:10240|mimetypes:application/pdf,image/jpeg,image/png,image/gif',
         ]);
 
+        $allowedFilenames = [
+            'form_137', 'form_138', 'good_moral', 'psa', 'pic',
+            'esc_certificate', 'diploma', 'brgy_certificate', 'ncae', 'af_five'
+        ];
+
         try {
-            $file = $this->file_upload;
-
-            $type = $file->getMimeType(); 
-            $blob = file_get_contents($file->getRealPath());
-
             $docu = Document::firstOrCreate([
                 'student_id' => $this->student->id,
             ]);
 
-            DocumentRecord::create([
-                'document_id' => $docu->id,
-                'type' => $type,
-                'docs' => $blob,
-            ]);
+            $docFile = DocumentFile::firstOrCreate(['document_id' => $docu->id]);
 
-            $this->reset('file_upload');
-            $this->mount();
-            $this->dispatch('fileUploded');
+            foreach ($this->file_uploads as $file) {
+                $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $sluggedFilename = Str::slug($filename, '_');
+
+                if (!in_array($sluggedFilename, $allowedFilenames)) {
+                    session()->flash('message', "Invalid file name: $filename");
+                    break;
+                }
+
+                $blob = file_get_contents($file->getRealPath());
+
+                $docFile->update([
+                    $sluggedFilename => $blob,
+                ]);
+
+                if ($docFile){ 
+                    Checklist::updateOrCreate(
+                        [
+                            'document_id' => $docu->id
+                        ],
+                        [
+                            $sluggedFilename => true
+                        ]
+                    );
+
+                    $this->dispatch('fileUploded');
+                }
+            }
+
+            $this->reset('file_uploads');
         } catch (\Exception $e) {
             session()->flash('message', 'Failed to upload: ' . Str::limit($e->getMessage(), 30));
+            $this->reset('file_uploads');
         }
+
+        $this->mount();
     }
 
     public function back(){
-        return redirect()->route('index_grade_12', 'data');
+        return redirect()->route('index_grade_11', 'data');
     }
 
     public function student_information(){
-        return redirect()->route('index_grade_12_profile', ['student_profile', $this->academic_record->id]);
+        return redirect()->route('index_grade_11_profile', ['student_profile', $this->academic_record->id]);
     }
 
     public function render()
     {
         $documents = [];
 
-        if ($this->docs){
-            $documents = DocumentRecord::where('document_id', $this->docs->id)->latest()->paginate(1);
+        if($this->docs){
+            $documents = DocumentFile::where('document_id', $this->docs->id)->get();
         }
         
         return view('livewire.grade12.student-documents', [

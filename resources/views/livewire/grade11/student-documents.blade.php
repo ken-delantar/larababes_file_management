@@ -151,7 +151,7 @@
 
     <x-dialog-modal wire:model="viewDocumentModal">
         <x-slot name="title">
-            <!-- Optional Title -->
+            
         </x-slot>
     
         <x-slot name="content">

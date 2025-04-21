@@ -1,9 +1,4 @@
-@php
-    $docs = \App\Models\Document::find($document['document_id']);
-    $student = \App\Models\Student::find($docs->student_id);
-@endphp
-
 <div>
-    {{ $student->id }}<br>
-    {{ $student->name }}
+    Student ID: {{ $row->student_id }}<br>
+    Name: {{ $row->student_name }}
 </div>
