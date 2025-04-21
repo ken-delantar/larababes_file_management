@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Models\AcademicRecord;
+use App\Models\DocumentFile;
 use App\Models\DocumentRecord;
 
 class StudentDocuments extends Component
@@ -109,43 +110,42 @@ class StudentDocuments extends Component
         $this->validate([
             'file_uploads.*' => 'required|file|max:10240|mimetypes:application/pdf,image/jpeg,image/png,image/gif',
         ]);
-    
+
         $allowedFilenames = [
             'form_137', 'form_138', 'good_moral', 'psa', 'pic',
             'esc_certificate', 'diploma', 'brgy_certificate', 'ncae', 'af_five'
         ];
-    
+
         try {
             $docu = Document::firstOrCreate([
                 'student_id' => $this->student->id,
             ]);
-    
+
+            $docFile = DocumentFile::firstOrCreate(['document_id' => $docu->id]);
+
             foreach ($this->file_uploads as $file) {
                 $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-    
-                if (!in_array(Str::slug($filename, '_'), $allowedFilenames)) {
+                $sluggedFilename = Str::slug($filename, '_');
+
+                if (!in_array($sluggedFilename, $allowedFilenames)) {
                     session()->flash('message', "Invalid file name: $filename. Allowed names: " . implode(', ', $allowedFilenames));
                     return;
                 }
-    
-                $type = $file->getMimeType(); 
+
                 $blob = file_get_contents($file->getRealPath());
-    
-                DocumentRecord::create([
-                    'document_id' => $docu->id,
-                    'type' => $type,
-                    'docs' => $blob,
+
+                $docFile->update([
+                    $sluggedFilename => $blob,
                 ]);
             }
-    
+
             $this->reset('file_uploads');
             $this->mount(); 
             $this->dispatch('fileUploded');
         } catch (\Exception $e) {
-            session()->flash('message', 'Failed to upload: ' . Str::limit($e->getMessage(), 30));
+            session()->flash('message', 'Failed to upload: ' . Str::limit($e->getMessage(), 500));
         }
     }
-    
 
     public function back(){
         return redirect()->route('index_grade_11', 'data');
@@ -159,9 +159,7 @@ class StudentDocuments extends Component
     {
         $documents = [];
 
-        if ($this->docs){
-            $documents = DocumentRecord::where('document_id', $this->docs->id)->latest()->paginate(1);
-        }
+        $documents = DocumentFile::where('document_id', $this->docs->id)->get();
         
         return view('livewire.grade11.student-documents', [
             'documents' => $documents

@@ -27,6 +27,7 @@ return new class extends Migration
             $table->binary('brgy_certificate')->nullable();
             $table->binary('ncae')->nullable();
             $table->binary('af_five')->nullable();
+            $table->timestamps();
         });
 
         DB::statement('ALTER TABLE document_files MODIFY COLUMN form_137 LONGBLOB');

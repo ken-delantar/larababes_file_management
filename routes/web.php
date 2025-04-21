@@ -11,6 +11,7 @@ use App\Http\Controllers\GradeElevenController;
 use App\Http\Controllers\GradeTwelveController;
 use App\Livewire\Grade11\Index as Grade11Index;
 use App\Models\AcademicRecord;
+use App\Models\DocumentFile;
 use App\Models\SchoolYear;
 use App\Models\Section;
 use App\Models\Strand;
@@ -50,20 +51,31 @@ Route::middleware([
 
 
 Route::get('/trial', function () {
-    $documents = DocumentRecord::all();
+    $documents = DocumentFile::all();
     return view('inamoferrer', compact('documents'));
 })->name('trial');
 
 Route::get('/document/view/{id}', function ($id) {
-    $document = DocumentRecord::findOrFail($id);
+    $document = DocumentFile::findOrFail($id);
 
-    $finfo = new finfo(FILEINFO_MIME_TYPE);
-    $mimeType = $finfo->buffer($document->docs);
+    $documentColumns = [
+        'form_137', 'form_138', 'good_moral', 'psa', 'pic',
+        'esc_certificate', 'diploma', 'brgy_certificate', 'ncae', 'af_five'
+    ];
 
-    return Response::make($document->docs, 200, [
-        'Content-Type' => $mimeType,
-        'Content-Disposition' => 'inline; filename="document"'
-    ]);
+    foreach ($documentColumns as $column) {
+        if (!empty($document->{$column})) {
+            $fileData = $document->{$column};
+
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $mimeType = $finfo->buffer($fileData);
+
+            return Response::make($fileData, 200, [
+                'Content-Type' => $mimeType,
+                'Content-Disposition' => "inline; filename=\"$column\""
+            ]);
+        }
+    }
 })->name('document.view');
 
 

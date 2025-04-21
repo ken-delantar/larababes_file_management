@@ -25,23 +25,146 @@
         <div class="flex-1 p-4 rounded bg-gray-50 dark:bg-gray-900">
 
             @forelse ($documents as $doc)
-                <div class="space-y-8 h-96 pr-3">
-                    <div>
-                        <iframe src="{{ route('document.view', $doc->id) }}" class="w-full h-[400px] border border-gray-200 dark:border-gray-700 rounded"></iframe>
-                    </div>
+                <div x-data="{ openForm137: false, openForm138: false, openGoodMoral: false, openPsa: false, openPic: false, openEsc: false, openDiploma: false, openBrgy: false, openNcae: false, openAfFive: false }">
+                    @if ($doc->form_137)
+                        <div>
+                            <button @click="openForm137 = !openForm137"
+                                class="text-left w-full px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md font-semibold shadow transition">
+                                FORM 137
+                            </button>
+                            <div x-show="openForm137" x-transition class="mt-2">
+                                <iframe src="{{ route('document.view', ['id' => $doc->id, 'field' => 'form_137']) }}"
+                                    class="w-full h-[400px] rounded border border-gray-300 shadow"></iframe>
+                            </div>
+                        </div>
+                    @endif
+                
+                    @if ($doc->form_138)
+                        <div class="mt-4">
+                            <button @click="openForm138 = !openForm138"
+                                class="text-left w-full px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md font-semibold shadow transition">
+                                FORM 138
+                            </button>
+                            <div x-show="openForm138" x-transition class="mt-2">
+                                <iframe src="{{ route('document.view', ['id' => $doc->id, 'field' => 'form_138']) }}"
+                                    class="w-full h-[400px] rounded border border-gray-300 shadow"></iframe>
+                            </div>
+                        </div>
+                    @endif
+                
+                    @if ($doc->good_moral)
+                        <div class="mt-4">
+                            <button @click="openGoodMoral = !openGoodMoral"
+                                class="text-left w-full px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md font-semibold shadow transition">
+                                Good Moral
+                            </button>
+                            <div x-show="openGoodMoral" x-transition class="mt-2">
+                                <iframe src="{{ route('document.view', ['id' => $doc->id, 'field' => 'good_moral']) }}"
+                                    class="w-full h-[400px] rounded border border-gray-300 shadow"></iframe>
+                            </div>
+                        </div>
+                    @endif
+                
+                    @if ($doc->psa)
+                        <div class="mt-4">
+                            <button @click="openPsa = !openPsa"
+                                class="text-left w-full px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md font-semibold shadow transition">
+                                PSA
+                            </button>
+                            <div x-show="openPsa" x-transition class="mt-2">
+                                <iframe src="{{ route('document.view', ['id' => $doc->id, 'field' => 'psa']) }}"
+                                    class="w-full h-[400px] rounded border border-gray-300 shadow"></iframe>
+                            </div>
+                        </div>
+                    @endif
+                
+                    @if ($doc->pic)
+                        <div class="mt-4">
+                            <button @click="openPic = !openPic"
+                                class="text-left w-full px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md font-semibold shadow transition">
+                                2x2 Picture
+                            </button>
+                            <div x-show="openPic" x-transition class="mt-2">
+                                <iframe src="{{ route('document.view', ['id' => $doc->id, 'field' => 'pic']) }}"
+                                    class="w-full h-[400px] rounded border border-gray-300 shadow"></iframe>
+                            </div>
+                        </div>
+                    @endif
+                
+                    @if ($doc->esc_certificate)
+                        <div class="mt-4">
+                            <button @click="openEsc = !openEsc"
+                                class="text-left w-full px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md font-semibold shadow transition">
+                                ESC Certificate
+                            </button>
+                            <div x-show="openEsc" x-transition class="mt-2">
+                                <iframe src="{{ route('document.view', ['id' => $doc->id, 'field' => 'esc_certificate']) }}"
+                                    class="w-full h-[400px] rounded border border-gray-300 shadow"></iframe>
+                            </div>
+                        </div>
+                    @endif
+                
+                    @if ($doc->diploma)
+                        <div class="mt-4">
+                            <button @click="openDiploma = !openDiploma"
+                                class="text-left w-full px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md font-semibold shadow transition">
+                                Diploma
+                            </button>
+                            <div x-show="openDiploma" x-transition class="mt-2">
+                                <iframe src="{{ route('document.view', ['id' => $doc->id, 'field' => 'diploma']) }}"
+                                    class="w-full h-[400px] rounded border border-gray-300 shadow"></iframe>
+                            </div>
+                        </div>
+                    @endif
+                
+                    @if ($doc->brgy_certificate)
+                        <div class="mt-4">
+                            <button @click="openBrgy = !openBrgy"
+                                class="text-left w-full px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md font-semibold shadow transition">
+                                Brgy. Certificate
+                            </button>
+                            <div x-show="openBrgy" x-transition class="mt-2">
+                                <iframe src="{{ route('document.view', ['id' => $doc->id, 'field' => 'brgy_certificate']) }}"
+                                    class="w-full h-[400px] rounded border border-gray-300 shadow"></iframe>
+                            </div>
+                        </div>
+                    @endif
+                
+                    @if ($doc->ncae)
+                        <div class="mt-4">
+                            <button @click="openNcae = !openNcae"
+                                class="text-left w-full px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md font-semibold shadow transition">
+                                NCAE
+                            </button>
+                            <div x-show="openNcae" x-transition class="mt-2">
+                                <iframe src="{{ route('document.view', ['id' => $doc->id, 'field' => 'ncae']) }}"
+                                    class="w-full h-[400px] rounded border border-gray-300 shadow"></iframe>
+                            </div>
+                        </div>
+                    @endif
+                
+                    @if ($doc->af_five)
+                        <div class="mt-4">
+                            <button @click="openAfFive = !openAfFive"
+                                class="text-left w-full px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-md font-semibold shadow transition">
+                                AF-5
+                            </button>
+                            <div x-show="openAfFive" x-transition class="mt-2">
+                                <iframe src="{{ route('document.view', ['id' => $doc->id, 'field' => 'af_five']) }}"
+                                    class="w-full h-[400px] rounded border border-gray-300 shadow"></iframe>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             @empty
-                <div class="text-center py-8">
-                    <img src="https://cdn-icons-png.flaticon.com/512/833/833281.png" alt="No documents uploaded" class="mx-auto w-32 h-32 opacity-50 mb-4" />
-                    <p class="text-gray-500">No documents uploaded yet.</p>
-                </div>
+                <p class="text-gray-500 italic">No documents found.</p>
             @endforelse
-
-            @if ($documents)
+        
+            {{-- @if ($documents)
                 <div class="mt-8">
                     {{ $documents->links() }}
                 </div>
-            @endif
+            @endif --}}
 
             <form wire:submit='uploadFile' class="mt-5">
                 <div class="mb-3 px-3">
@@ -66,6 +189,15 @@
                     Uploaded.
                 </x-action-message>
                 @error('file_upload')<span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                
+                <div class="mt-3">
+                    @if (session()->has('message'))
+                        <div class="px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Notice: </strong>
+                            <span class="block sm:inline">{{ session('message') }}</span>
+                        </div>
+                    @endif
+                </div>
             </form>
         </div>
 
