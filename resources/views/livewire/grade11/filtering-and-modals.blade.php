@@ -130,8 +130,6 @@
                     <x-input id="section_number" wire:model="sectionNumber" type="text" class="mt-1 block w-full dark:bg-gray-800 dark:border-gray-600 dark:text-white" />
                     @error('sectionNumber') <span class="text-sm text-red-600 dark:text-red-400">{{ $message }}</span> @enderror
                 </div>
-
-
             </div>
         </x-slot>
     

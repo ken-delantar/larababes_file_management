@@ -15,10 +15,11 @@ use App\Models\DocumentFile;
 use App\Models\DocumentRecord;
 
 class StudentDocuments extends Component
-{
+{   
     use WithPagination, WithFileUploads;
 
-    public $addDocumentsModal = false;
+    public $viewDocumentModal = false;
+    public $file_id, $field;
 
     public $student_id, $name;
     public $student;
@@ -69,8 +70,8 @@ class StudentDocuments extends Component
         }
     }
 
-    public function addDocuments(){
-        return $this->addDocumentsModal = true;
+    public function viewDocument(){
+        $this->viewDocumentModal = true;
     }
     
     public function checklist()
@@ -137,13 +138,19 @@ class StudentDocuments extends Component
                 $docFile->update([
                     $sluggedFilename => $blob,
                 ]);
+
+                if ($docFile){
+                    $this->mount(); 
+                    $this->dispatch('fileUploded');
+                    return;
+                }else {
+                    new Exception('Something went wrong.');
+                }
             }
 
             $this->reset('file_uploads');
-            $this->mount(); 
-            $this->dispatch('fileUploded');
         } catch (\Exception $e) {
-            session()->flash('message', 'Failed to upload: ' . Str::limit($e->getMessage(), 500));
+            session()->flash('message', 'Failed to upload: ' . Str::limit($e->getMessage(), 30));
         }
     }
 
