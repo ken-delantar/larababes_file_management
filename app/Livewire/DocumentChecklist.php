@@ -2,26 +2,23 @@
 
 namespace App\Livewire;
 
-use App\Models\Checklist;
+use App\Models\Student;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 
 class DocumentChecklist extends DataTableComponent
 {
-    protected $model = Checklist::class;
+    protected $model = Student::class;
 
     public function configure(): void
     {
-        $this->setPrimaryKey('checklists.id');
+        $this->setPrimaryKey('id');
     }
 
     public function builder(): Builder
     {
-        return Checklist::query()
-            ->select('checklists.*', 'students.name as student_name', 'students.id as student_id')
-            ->leftJoin('documents', 'checklists.document_id', '=', 'documents.id')
-            ->leftJoin('students', 'documents.student_id', '=', 'students.id');
+        return Student::query()->with('document.checklist');
     }
 
     public function columns(): array
@@ -29,50 +26,50 @@ class DocumentChecklist extends DataTableComponent
         return [
             Column::make("ID", "id")->hideIf(true),
 
-            Column::make('Student Name', 'student_name')
+            Column::make("Student Name", "name")
                 ->sortable()
-                ->searchable()
-                ->label(function ($row) {
-                    return view('livewire.checklist-additional-details', ['row' => $row]);
-                }),
+                ->searchable(),
 
-            Column::make("Document ID", "document_id")->hideIf(true),
+            Column::make("Form 137")
+                ->label(fn($row) => $this->check($row, 'form_137'))
+                ->footer(fn($rows) => $rows->filter(fn($row) => $this->check($row, 'form_137') === 1)->count()),
 
-            Column::make("Form 137", "form_137")
-                ->sortable()
-                ->footer(fn($rows) => $rows->filter(fn($row) => $row->form_137)->count()),
+            Column::make("Form 138")
+                ->label(fn($row) => $this->check($row, 'form_138'))
+                ->footer(fn($rows) => $rows->filter(fn($row) => $this->check($row, 'form_138') === 1)->count()),
 
-            Column::make("Form 138", "form_138")
-                ->sortable()
-                ->footer(fn($rows) => $rows->filter(fn($row) => $row->form_138)->count()),
+            Column::make("Good Moral")
+                ->label(fn($row) => $this->check($row, 'good_moral'))
+                ->footer(fn($rows) => $rows->filter(fn($row) => $this->check($row, 'good_moral') === 1)->count()),
 
-            Column::make("Good Moral", "good_moral")
-                ->sortable()
-                ->footer(fn($rows) => $rows->filter(fn($row) => $row->good_moral)->count()),
+            Column::make("PSA")
+                ->label(fn($row) => $this->check($row, 'psa'))
+                ->footer(fn($rows) => $rows->filter(fn($row) => $this->check($row, 'psa') === 1)->count()),
 
-            Column::make("PSA", "psa")
-                ->sortable()
-                ->footer(fn($rows) => $rows->filter(fn($row) => $row->psa)->count()),
+            Column::make("Pic")
+                ->label(fn($row) => $this->check($row, 'pic'))
+                ->footer(fn($rows) => $rows->filter(fn($row) => $this->check($row, 'pic') === 1)->count()),
 
-            Column::make("PIC", "pic")
-                ->sortable()
-                ->footer(fn($rows) => $rows->filter(fn($row) => $row->pic)->count()),
+            Column::make("ESC Certificate")
+                ->label(fn($row) => $this->check($row, 'esc_certificate'))
+                ->footer(fn($rows) => $rows->filter(fn($row) => $this->check($row, 'esc_certificate') === 1)->count()),
 
-            Column::make("ESC Certificate", "esc_certificate")
-                ->sortable()
-                ->footer(fn($rows) => $rows->filter(fn($row) => $row->esc_certificate)->count()),
+            Column::make("Brgy Certificate")
+                ->label(fn($row) => $this->check($row, 'brgy_certificate'))
+                ->footer(fn($rows) => $rows->filter(fn($row) => $this->check($row, 'brgy_certificate') === 1)->count()),
 
-            Column::make("Brgy Certificate", "brgy_certificate")
-                ->sortable()
-                ->footer(fn($rows) => $rows->filter(fn($row) => $row->brgy_certificate)->count()),
+            Column::make("NCAE")
+                ->label(fn($row) => $this->check($row, 'ncae'))
+                ->footer(fn($rows) => $rows->filter(fn($row) => $this->check($row, 'ncae') === 1)->count()),
 
-            Column::make("NCAE", "ncae")
-                ->sortable()
-                ->footer(fn($rows) => $rows->filter(fn($row) => $row->ncae)->count()),
-
-            Column::make("AF Five", "af_five")
-                ->sortable()
-                ->footer(fn($rows) => $rows->filter(fn($row) => $row->af_five)->count()),
+            Column::make("AF Five")
+                ->label(fn($row) => $this->check($row, 'af_five'))
+                ->footer(fn($rows) => $rows->filter(fn($row) => $this->check($row, 'af_five') === 1)->count()),
         ];
+    }
+
+    private function check($row, $field): int
+    {
+        return optional($row->document?->checklist)->$field ? 1 : 0;
     }
 }

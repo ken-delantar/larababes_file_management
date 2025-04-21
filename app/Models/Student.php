@@ -35,4 +35,8 @@ class Student extends Model
     {
         return $this->financialRecords()->latest()->first();
     }
+
+    public function document() {
+        return $this->hasOne(Document::class, 'student_id');
+    }
 }
