@@ -11,6 +11,7 @@ use App\Http\Controllers\GradeElevenController;
 use App\Http\Controllers\GradeTwelveController;
 use App\Livewire\Grade11\Index as Grade11Index;
 use App\Models\AcademicRecord;
+use App\Models\SchoolYear;
 use App\Models\Section;
 use App\Models\Strand;
 use App\Models\Student;
@@ -28,8 +29,9 @@ Route::middleware([
         $students = Student::all();
         $strands = Strand::all();
         $academic_records = AcademicRecord::all();
+        $school_years = SchoolYear::all();
 
-        return view('dashboard', compact('students', 'strands', 'academic_records'));
+        return view('dashboard', compact('students', 'strands', 'academic_records', 'school_years'));
     })->name('dashboard');
     
     Route::get('/grade_11_index/{view}', [GradeElevenController::class, 'render'])->name('index_grade_11');

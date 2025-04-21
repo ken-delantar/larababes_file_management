@@ -1,6 +1,31 @@
 <x-app-layout>
     <div class="py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+            <div class="flex">
+                <x-dropdown>
+                    <x-slot name="trigger">
+                        <x-secondary-button class="px-4 py-2 rounded flex items-center space-x-2">
+                            <span>School Year</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </x-secondary-button>
+                    </x-slot>
+                
+                    <x-slot name="content">
+                        @foreach ($school_years as $school_year)
+                            <x-dropdown-link>
+                                {{ $school_year->year_start }} - {{ $school_year->year_end }}
+                            </x-dropdown-link>
+                        @endforeach
+            
+                        {{-- <x-dropdown-link wire:click="addSchoolYear" type="button">
+                            ADD S.Y
+                        </x-dropdown-link> --}}
+                    </x-slot>
+                </x-dropdown>
+            </div>
+
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 <div class="bg-white rounded-lg shadow p-6 flex items-center space-x-4">
                     <div class="p-3 bg-blue-100 text-blue-600 rounded-full">

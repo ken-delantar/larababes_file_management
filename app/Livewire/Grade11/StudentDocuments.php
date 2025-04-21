@@ -17,13 +17,15 @@ class StudentDocuments extends Component
 {
     use WithPagination, WithFileUploads;
 
+    public $addDocumentsModal = false;
+
     public $student_id, $name;
     public $student;
     public $docs;
 
     public $academic_record;
 
-    public $file_upload;
+    public $file_uploads = [];
     public $form_137, $form_138, $good_moral, $psa, $pic, $esc_certificate, $diploma, $brgy_certificate, $ncae, $af_five;
 
     public $checklistData = [
@@ -65,6 +67,10 @@ class StudentDocuments extends Component
             }
         }
     }
+
+    public function addDocuments(){
+        return $this->addDocumentsModal = true;
+    }
     
     public function checklist()
     {
@@ -101,32 +107,45 @@ class StudentDocuments extends Component
     public function uploadFile()
     {
         $this->validate([
-            'file_upload' => 'required|file|max:10240|mimetypes:application/pdf,image/jpeg,image/png,image/gif',
+            'file_uploads.*' => 'required|file|max:10240|mimetypes:application/pdf,image/jpeg,image/png,image/gif',
         ]);
-
+    
+        $allowedFilenames = [
+            'form_137', 'form_138', 'good_moral', 'psa', 'pic',
+            'esc_certificate', 'diploma', 'brgy_certificate', 'ncae', 'af_five'
+        ];
+    
         try {
-            $file = $this->file_upload;
-
-            $type = $file->getMimeType(); 
-            $blob = file_get_contents($file->getRealPath());
-
             $docu = Document::firstOrCreate([
                 'student_id' => $this->student->id,
             ]);
-
-            DocumentRecord::create([
-                'document_id' => $docu->id,
-                'type' => $type,
-                'docs' => $blob,
-            ]);
-
-            $this->reset('file_upload');
-            $this->mount();
+    
+            foreach ($this->file_uploads as $file) {
+                $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+    
+                if (!in_array(Str::slug($filename, '_'), $allowedFilenames)) {
+                    session()->flash('message', "Invalid file name: $filename. Allowed names: " . implode(', ', $allowedFilenames));
+                    return;
+                }
+    
+                $type = $file->getMimeType(); 
+                $blob = file_get_contents($file->getRealPath());
+    
+                DocumentRecord::create([
+                    'document_id' => $docu->id,
+                    'type' => $type,
+                    'docs' => $blob,
+                ]);
+            }
+    
+            $this->reset('file_uploads');
+            $this->mount(); 
             $this->dispatch('fileUploded');
         } catch (\Exception $e) {
             session()->flash('message', 'Failed to upload: ' . Str::limit($e->getMessage(), 30));
         }
     }
+    
 
     public function back(){
         return redirect()->route('index_grade_11', 'data');
