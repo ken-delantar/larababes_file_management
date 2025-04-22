@@ -183,7 +183,7 @@ class StudentDocuments extends Component
     }
 
     public function student_information(){
-        return redirect()->route('index_grade_11_profile', ['student_profile', $this->academic_record->id]);
+        return redirect()->route('index_grade_12_profile', ['student_profile', $this->academic_record->id]);
     }
 
     public function render()

@@ -27,14 +27,14 @@
                 @if ($doc->form_137)
                     <button wire:click="viewDocument({{ $doc->id }}, 'form_137')" type="button"
                         class="text-left w-full px-4 m-1 py-2 bg-gray-100 hover:bg-gray-200 rounded-md font-semibold shadow transition">
-                        FORM 137
+                        Form 137
                     </button>
                 @endif
                 
                 @if ($doc->form_138)
                     <button wire:click="viewDocument({{ $doc->id }}, 'form_138')" type="button"
                         class="text-left w-full px-4 m-1 py-2 bg-gray-100 hover:bg-gray-200 rounded-md font-semibold shadow transition">
-                        FORM 138
+                        Form 138
                     </button>
                 @endif
                 
@@ -151,7 +151,7 @@
 
     <x-dialog-modal wire:model="viewDocumentModal">
         <x-slot name="title">
-            
+
         </x-slot>
     
         <x-slot name="content">
@@ -185,6 +185,5 @@
                 width: 90vw !important;
             }
         </style>
-    </x-dialog-modal>
-    
+    </x-dialog-modal>  
 </div>
