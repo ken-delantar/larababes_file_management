@@ -21,68 +21,81 @@ class StrandSeeder extends Seeder
 
         DB::table('strands')->insert([
             [
+                'id' => 1,
                 'strand' => 'ICT'
             ],
 
             [
+                'id' => 2,
                 'strand' => 'ABM'
             ],
 
             [
+                'id' => 3,
                 'strand' => 'STEM'
             ],
 
             [
+                'id' => 4,
                 'strand' => 'HUMMS'
             ],
 
             [
+                'id' => 5,
                 'strand' => 'GAS'
             ],
 
             [
+                'id' => 6,
                 'strand' => 'HE'
             ],
         ]);
 
         DB::table('school_years')->insert([
             [
+                'id' => 1,
                 'year_start' => 2016,
                 'year_end' => 2017,
                 'school_year' => '2016 - 2017'
             ],
 
             [
+                'id' => 2,
                 'year_start' => 2017,
                 'year_end' => 2018,
                 'school_year' => '2017 - 2018'
             ],
 
             [
+                'id' => 3,
                 'year_start' => 2018,
                 'year_end' => 2019,
                 'school_year' => '2018 - 2019'
             ],
 
             [
+                'id' => 4,
                 'year_start' => 2020,
                 'year_end' => 2021,
                 'school_year' => '2020 - 2021'
             ],
 
             [
+                'id' => 5,
                 'year_start' => 2021,
                 'year_end' => 2022,
                 'school_year' => '2021 - 2022'
             ],
 
             [
+                'id' => 6,
                 'year_start' => 2023,
                 'year_end' => 2024,
                 'school_year' => '2023 - 2024'
             ],
 
             [
+                'id' => 7,
                 'year_start' => 2024,
                 'year_end' => 2025,
                 'school_year' => '2024 - 2025'

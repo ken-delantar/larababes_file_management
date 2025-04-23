@@ -12,11 +12,11 @@
             </x-slot>
         
             <x-slot name="content">
-                @foreach ($school_years as $school_year)
+                {{-- @foreach ($school_years as $school_year)
                     <x-dropdown-link>
                         {{ $school_year->year_start }} - {{ $school_year->year_end }}
                     </x-dropdown-link>
-                @endforeach
+                @endforeach --}}
     
                 <x-dropdown-link wire:click="addSchoolYear" type="button">
                     ADD S.Y
@@ -56,11 +56,11 @@
             </x-slot>
         
             <x-slot name="content">
-                @foreach ($sections as $section)
+                {{-- @foreach ($sections as $section)
                     <x-dropdown-link>
                         {{ $section->section_number }}
                     </x-dropdown-link>
-                @endforeach
+                @endforeach --}}
     
                 <x-dropdown-link wire:click="addSection">
                     Add Section

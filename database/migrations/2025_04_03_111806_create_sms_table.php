@@ -14,8 +14,8 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->unsignedBigInteger('lrn')->unique();
+            $table->string('name')->nullable()->default('Null');
+            $table->unsignedBigInteger('lrn')->unique()->nullable();
             $table->string('sex');
             $table->string('school_origin')->nullable()->default('Not Specified');
             $table->string('condition')->nullable()->default('Not Specified');
