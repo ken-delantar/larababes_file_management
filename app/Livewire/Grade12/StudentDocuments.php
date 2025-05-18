@@ -23,7 +23,7 @@ class StudentDocuments extends Component
     public $file_id, $field;
     public $fileMimeType;
 
-    public $student_id, $name;
+    public $student_id, $name;  
     public $student;
     public $docs;
 

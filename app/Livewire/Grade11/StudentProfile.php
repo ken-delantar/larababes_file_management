@@ -89,14 +89,15 @@ class StudentProfile extends Component
             'year_end_status_11' => 'nullable'
         ]);
 
-        // $this->student->id = $this->student_id;
-        // $this->academic_records->student_id = $this->student_id;
+        $this->student->id = $this->student_id;
+        $this->student->save();
+
+        $this->academic_records->student_id = $this->student_id;
         $this->academic_records->school_year_id = $this->school_year_11;
         $this->academic_records->strand_id = $this->strand_11;
         $this->academic_records->section_id = $this->section_11;
         $this->academic_records->year_end_status = $this->year_end_status_11;
         $this->academic_records->save();
-        // $this->student->save();
     }
 
     public function update_additional_information()

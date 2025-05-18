@@ -16,7 +16,7 @@ use App\Models\DocumentFile;
 use App\Models\DocumentRecord;
 
 class StudentDocuments extends Component
-{   
+{
     use WithPagination, WithFileUploads;
 
     public $viewDocumentModal = false;
@@ -51,10 +51,10 @@ class StudentDocuments extends Component
         $this->name = $this->student->name;
         $this->docs = Document::where('student_id', $this->student->id)->first();
         $this->academic_record = AcademicRecord::where('student_id', $this->student_id)->first();
-        
+
         if ($this->docs) {
             $checklist = Checklist::where('document_id', $this->docs->id)->first();
-            
+
             if ($checklist) {
                 $this->checklistData = [
                     'form_137' => $checklist->form_137 ?? false,
@@ -76,20 +76,20 @@ class StudentDocuments extends Component
     {
         $this->file_id = $file_id;
         $this->field = $field;
-    
+
         $doc = DocumentFile::find($file_id);
         $fileData = $doc?->{$field};
-    
+
         if ($fileData) {
             $finfo = new \finfo(FILEINFO_MIME_TYPE);
             $this->fileMimeType = $finfo->buffer($fileData);
         } else {
             $this->fileMimeType = null;
         }
-    
+
         $this->viewDocumentModal = true;
     }
-    
+
     public function checklist()
     {
         try {
@@ -112,7 +112,7 @@ class StudentDocuments extends Component
 
             Checklist::updateOrCreate(
                 ['document_id' => $document->id],
-                $data['checklistData'] 
+                $data['checklistData']
             );
 
             session()->flash('message', 'Checklist saved successfully.');
@@ -128,9 +128,19 @@ class StudentDocuments extends Component
             'file_uploads.*' => 'required|file|max:10240|mimetypes:application/pdf,image/jpeg,image/png,image/gif',
         ]);
 
-        $allowedFilenames = [
-            'form_137', 'form_138', 'good_moral', 'psa', 'pic',
-            'esc_certificate', 'diploma', 'brgy_certificate', 'ncae', 'af_five'
+        // Map of accepted filenames and their corresponding DB column names
+        $filenameMap = [
+            'form_137' => 'form_137',
+            'form_138' => 'form_138',
+            'good_moral' => 'good_moral',
+            'psa' => 'psa',
+            'pic' => 'pic',
+            'esc_certificate' => 'esc_certificate',
+            'diploma' => 'diploma',
+            'brgy_certificate' => 'brgy_certificate',
+            'brgy_clearance' => 'brgy_certificate', // alias
+            'ncae' => 'ncae',
+            'af_five' => 'af_five',
         ];
 
         try {
@@ -138,35 +148,43 @@ class StudentDocuments extends Component
                 'student_id' => $this->student->id,
             ]);
 
-            $docFile = DocumentFile::firstOrCreate(['document_id' => $docu->id]);
+            $docFile = DocumentFile::updateOrCreate(['document_id' => $docu->id]);
 
             foreach ($this->file_uploads as $file) {
                 $filename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $sluggedFilename = Str::slug($filename, '_');
+                $sluggedFilename = Str::slug($filename, '_'); // e.g., "brgy_clearance(1)" becomes "brgy_clearance_1"
 
-                if (!in_array($sluggedFilename, $allowedFilenames)) {
+                $matchedField = null;
+
+                // Match based on contains, and map alias to actual field
+                foreach ($filenameMap as $key => $column) {
+                    if (Str::contains($sluggedFilename, $key)) {
+                        $matchedField = $column;
+                        break;
+                    }
+                }
+
+                if (!$matchedField) {
                     session()->flash('message', "Invalid file name: $filename");
-                    break;
+                    continue;
                 }
 
                 $blob = file_get_contents($file->getRealPath());
 
                 $docFile->update([
-                    $sluggedFilename => $blob,
+                    $matchedField => $blob,
                 ]);
 
-                if ($docFile){ 
-                    Checklist::updateOrCreate(
-                        [
-                            'document_id' => $docu->id
-                        ],
-                        [
-                            $sluggedFilename => true
-                        ]
-                    );
+                Checklist::updateOrCreate(
+                    [
+                        'document_id' => $docu->id
+                    ],
+                    [
+                        $matchedField => true
+                    ]
+                );
 
-                    $this->dispatch('fileUploded');
-                }
+                $this->dispatch('fileUploded');
             }
 
             $this->reset('file_uploads');
@@ -178,11 +196,13 @@ class StudentDocuments extends Component
         $this->mount();
     }
 
-    public function back(){
+    public function back()
+    {
         return redirect()->route('index_grade_11', 'data');
     }
 
-    public function student_information(){
+    public function student_information()
+    {
         return redirect()->route('index_grade_11_profile', ['student_profile', $this->academic_record->id]);
     }
 
@@ -190,10 +210,10 @@ class StudentDocuments extends Component
     {
         $documents = [];
 
-        if($this->docs){
+        if ($this->docs) {
             $documents = DocumentFile::where('document_id', $this->docs->id)->get();
         }
-        
+
         return view('livewire.grade11.student-documents', [
             'documents' => $documents
         ]);
