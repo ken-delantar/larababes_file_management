@@ -118,5 +118,4 @@
             });
         });
     </script>
-
 </x-app-layout>
