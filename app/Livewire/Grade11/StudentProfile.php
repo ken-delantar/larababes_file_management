@@ -38,16 +38,16 @@ class StudentProfile extends Component
 
         $this->student_id = $this->student->id;
         $this->name = $this->student->name;
-        $this->sex = $this->student->sex;  
+        $this->sex = $this->student->sex;
 
-        if($this->academic_records){
+        if ($this->academic_records) {
             $this->school_year_11 = $this->academic_records->school_year_id;
             $this->strand_11 = $this->academic_records->strand_id;
             $this->section_11 = $this->academic_records->section_id;
             $this->year_end_status_11 = $this->academic_records->year_end_status;
         }
 
-        if($this->financial_records){
+        if ($this->financial_records) {
             $this->category = $this->financial_records->category;
             $this->billing_status = $this->financial_records->billing_status;
             $this->vms_billing_status = $this->financial_records->vms_billing_status;
@@ -67,7 +67,8 @@ class StudentProfile extends Component
         $this->dispatch('updated');
     }
 
-    public function update_student_profile(){
+    public function update_student_profile()
+    {
         // public $name, $email = 'juandelacruz@email.com', $sex;
         $this->validate([
             'name' => 'required|string|max:255',
@@ -79,12 +80,13 @@ class StudentProfile extends Component
         $this->student->save();
     }
 
-    public function update_academic_record(){
+    public function update_academic_record()
+    {
         //public $school_year_11, $strand_11, $section_11, $year_end_status_11;
         $this->validate([
             'student_id' => 'required|integer',
-            'school_year_11' => 'required|exists:school_years,id', 
-            'strand_11' => 'required|exists:strands,id', 
+            'school_year_11' => 'required|exists:school_years,id',
+            'strand_11' => 'required|exists:strands,id',
             'section_11' => 'required|exists:sections,id',
             'year_end_status_11' => 'nullable'
         ]);

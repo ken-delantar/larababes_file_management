@@ -79,24 +79,26 @@ class StudentProfile extends Component
         $this->student->save();
     }
 
-    public function update_academic_record(){
+    public function update_academic_record()
+    {
         //public $school_year_11, $strand_11, $section_11, $year_end_status_11;
         $this->validate([
             'student_id' => 'required|integer',
-            'school_year_11' => 'required|exists:school_years,id', 
-            'strand_11' => 'required|exists:strands,id', 
+            'school_year_11' => 'required|exists:school_years,id',
+            'strand_11' => 'required|exists:strands,id',
             'section_11' => 'required|exists:sections,id',
             'year_end_status_11' => 'nullable'
         ]);
 
-        // $this->student->id = $this->student_id;
-        // $this->academic_records->student_id = $this->student_id;
+        $this->student->id = $this->student_id;
+        $this->student->save();
+
+        $this->academic_records->student_id = $this->student_id;
         $this->academic_records->school_year_id = $this->school_year_11;
         $this->academic_records->strand_id = $this->strand_11;
         $this->academic_records->section_id = $this->section_11;
         $this->academic_records->year_end_status = $this->year_end_status_11;
         $this->academic_records->save();
-        // $this->student->save();
     }
 
     public function update_additional_information()

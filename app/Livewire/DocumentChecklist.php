@@ -11,6 +11,9 @@ class DocumentChecklist extends DataTableComponent
 {
     protected $model = Student::class;
 
+    // Store totals here
+    public array $documentTotals = [];
+
     public function configure(): void
     {
         $this->setPrimaryKey('id');
@@ -19,6 +22,51 @@ class DocumentChecklist extends DataTableComponent
     public function builder(): Builder
     {
         return Student::query()->with('document.checklist');
+    }
+
+    // Called automatically by Livewire on mount and whenever table updates
+    public function updatedFilters()
+    {
+        $this->calculateTotals();
+    }
+
+    public function mount()
+    {
+        $this->calculateTotals();
+    }
+
+    protected function calculateTotals()
+    {
+        // Initialize counts for each document field
+        $fields = [
+            'form_137',
+            'form_138',
+            'good_moral',
+            'psa',
+            'pic',
+            'esc_certificate',
+            'brgy_certificate',
+            'ncae',
+            'af_five',
+        ];
+
+        // Initialize counts
+        $this->documentTotals = array_fill_keys($fields, 0);
+
+        // Get all student IDs in the current filtered builder
+        $studentIds = $this->builder()->pluck('id');
+
+        // Load students with documents and checklist for those IDs
+        $students = Student::whereIn('id', $studentIds)->with('document.checklist')->get();
+
+        foreach ($students as $student) {
+            $checklist = optional($student->document)->checklist;
+            foreach ($fields as $field) {
+                if ($checklist && $checklist->$field) {
+                    $this->documentTotals[$field]++;
+                }
+            }
+        }
     }
 
     public function columns(): array
@@ -32,39 +80,39 @@ class DocumentChecklist extends DataTableComponent
 
             Column::make("Form 137")
                 ->label(fn($row) => $this->check($row, 'form_137'))
-                ->footer(fn($rows) => $rows->filter(fn($row) => $this->check($row, 'form_137') === 1)->count()),
+                ->footer(fn() => $this->documentTotals['form_137'] ?? 0),
 
             Column::make("Form 138")
                 ->label(fn($row) => $this->check($row, 'form_138'))
-                ->footer(fn($rows) => $rows->filter(fn($row) => $this->check($row, 'form_138') === 1)->count()),
+                ->footer(fn() => $this->documentTotals['form_138'] ?? 0),
 
             Column::make("Good Moral")
                 ->label(fn($row) => $this->check($row, 'good_moral'))
-                ->footer(fn($rows) => $rows->filter(fn($row) => $this->check($row, 'good_moral') === 1)->count()),
+                ->footer(fn() => $this->documentTotals['good_moral'] ?? 0),
 
             Column::make("PSA")
                 ->label(fn($row) => $this->check($row, 'psa'))
-                ->footer(fn($rows) => $rows->filter(fn($row) => $this->check($row, 'psa') === 1)->count()),
+                ->footer(fn() => $this->documentTotals['psa'] ?? 0),
 
             Column::make("Pic")
                 ->label(fn($row) => $this->check($row, 'pic'))
-                ->footer(fn($rows) => $rows->filter(fn($row) => $this->check($row, 'pic') === 1)->count()),
+                ->footer(fn() => $this->documentTotals['pic'] ?? 0),
 
             Column::make("ESC Certificate")
                 ->label(fn($row) => $this->check($row, 'esc_certificate'))
-                ->footer(fn($rows) => $rows->filter(fn($row) => $this->check($row, 'esc_certificate') === 1)->count()),
+                ->footer(fn() => $this->documentTotals['esc_certificate'] ?? 0),
 
             Column::make("Brgy Certificate")
                 ->label(fn($row) => $this->check($row, 'brgy_certificate'))
-                ->footer(fn($rows) => $rows->filter(fn($row) => $this->check($row, 'brgy_certificate') === 1)->count()),
+                ->footer(fn() => $this->documentTotals['brgy_certificate'] ?? 0),
 
             Column::make("NCAE")
                 ->label(fn($row) => $this->check($row, 'ncae'))
-                ->footer(fn($rows) => $rows->filter(fn($row) => $this->check($row, 'ncae') === 1)->count()),
+                ->footer(fn() => $this->documentTotals['ncae'] ?? 0),
 
             Column::make("AF Five")
                 ->label(fn($row) => $this->check($row, 'af_five'))
-                ->footer(fn($rows) => $rows->filter(fn($row) => $this->check($row, 'af_five') === 1)->count()),
+                ->footer(fn() => $this->documentTotals['af_five'] ?? 0),
         ];
     }
 
